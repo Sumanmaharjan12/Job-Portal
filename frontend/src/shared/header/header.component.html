@@ -1,0 +1,36 @@
+<div class="navbar">
+  <div class="logo">
+    <img src="../../assets/images/logo.webp" alt="logo" loading="lazy" />
+  </div>
+  <div class="nav">
+    <nav>Home</nav>
+
+    <!-- Show both if not logged in -->
+    <nav *ngIf="isPublic()">Explore</nav>
+    <nav *ngIf="isPublic()">Hire</nav>
+
+    <!-- Show only if JobSeeker -->
+    <nav *ngIf="isJobSeeker()">Explore</nav>
+
+    <!-- Show only if JobKeeper -->
+      <nav *ngIf="isJobKeeper()">Post A Job</nav>
+    <nav *ngIf="isJobKeeper()">Hire</nav>
+
+    <nav>Top Companies</nav>
+  </div>
+
+  <div class="btn" *ngIf="!isLoggedIn">
+    <button (click)="goToLogin()">Login</button>
+    <button (click)="goToSignup()">Sign Up</button>
+  </div>
+
+  <!-- Show Profile icon and Logout button ONLY when logged in -->
+  <div class="profile" *ngIf="isLoggedIn">
+    <button (click)="goToProfile()" class="profilebtn">
+      <img src="../../assets/images/logo.webp" alt="Profile" />
+    </button>
+    <div class="logoutbtn">
+      <button (click)="logout()">Logout</button>
+    </div>
+  </div>
+</div>

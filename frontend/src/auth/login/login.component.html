@@ -1,0 +1,104 @@
+<div class="auth">
+  <img src="../../assets/images/logo.webp" alt="Job Nepal Logo" />
+
+  <div class="login" [class.slide-left]="isSignup">
+    <!-- Left Panel -->
+    <div class="left">
+      <h1>{{ isSignup ? "Hello, Friend!" : "Welcome Back!" }}</h1>
+      <p>
+        {{
+          isSignup
+            ? "Enter your personal details and start your journey with us"
+            : "To keep connected with us, please login with your personal info"
+        }}
+      </p>
+      <button class="btn" (click)="togglePanel()">
+        {{ isSignup ? "Login" : "Signup" }}
+      </button>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right">
+      <h1>{{ isSignup ? "Create an Account" : "Sign In To Job Nepal" }}</h1>
+
+      <div class="social">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-google-plus-g"></i>
+        <i class="fa-brands fa-linkedin"></i>
+      </div>
+
+      <p>
+        {{
+          isSignup
+            ? "Or use your email account for registration"
+            : "Or use your email account"
+        }}
+      </p>
+      <div *ngIf="message" class="notification" [ngClass]="messageType">
+        {{ message }}
+      </div>
+
+      <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+        <div *ngIf="isSignup" class="input-icon-wrapper">
+          <i class="fa-solid fa-user"></i>
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="formData.name"
+            placeholder="Full Name"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="input-icon-wrapper">
+          <i class="fas fa-envelope"></i>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="formData.email"
+            placeholder="Email"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="input-icon-wrapper">
+          <i class="fa-solid fa-lock"></i>
+          <input
+            type="password"
+            name="password"
+            [(ngModel)]="formData.password"
+            placeholder="Password"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div *ngIf="isSignup" class="signup-role">
+          <button
+            type="button"
+            (click)="selectrole('JobKeeper')"
+            [class.active]="role === 'JobKeeper'"
+          >
+            JobKeeper
+          </button>
+
+          <button
+            type="button"
+            (click)="selectrole('JobSeeker')"
+            [class.active]="role === 'JobSeeker'"
+          >
+            JobSeeker
+          </button>
+        </div>
+
+        <span *ngIf="!isSignup">Forgot your password?</span>
+
+        <button type="submit" class="login-btn">
+          {{ isSignup ? "Signup" : "Login" }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

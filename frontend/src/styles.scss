@@ -1,0 +1,20 @@
+:root{
+    --font-family: 'Satoshi', sans-serif;
+    --Primary-color: #1768ff;
+      --Secondary-color: #99ccff;
+    --Background-color:#ffffff;
+    --Black-color: #000000;
+    --gray-color: #f6f6f6;
+    --Large-size: 60px;
+    --icon-size:32px;
+    --Heading-size: 42px;
+    --Subheading-size:20px;
+    --body-size:18px;
+    --Heading-color: #020E1A;
+    --SubHeading-color: #5c5c5c;
+}
+* {
+  font-family: var(--Font-family);
+  margin:0;
+  padding:0
+}
