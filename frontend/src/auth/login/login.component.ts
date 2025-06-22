@@ -73,9 +73,14 @@ export class LoginComponent implements OnInit {
         next: res =>{
           // this.setMessage('Login successful.', 'success');
           this.authService.setLoginStatus(true);
-           this.authService.setUserRole(res.user.role);  // save role here
-    console.log('Role saved:', localStorage.getItem('role'));
-           this.router.navigate(['/home']);
+           this.authService.setUserRole(res.user.role);
+           this.authService.setUserData({
+          name: res.user.name,
+          email: res.user.email
+          });  // save role here
+         console.log('Role saved:', localStorage.getItem('role'));
+        console.log('User data saved:', localStorage.getItem('user'));
+           this.router.navigate(['/profile']);
         },
         error : (err) => this.setMessage('Please check your email or password',err)
       });

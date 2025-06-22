@@ -1,0 +1,172 @@
+<div class="profile">
+  <div class="head">
+    <h1>Please Fill Up Your Details</h1>
+  </div>
+
+  <div class="content">
+    <div class="left">
+      <span [class.active]="currentStep === 1">Personal Info</span>
+      <span [class.active]="currentStep === 2">Professional Info</span>
+    </div>
+
+    <div class="right">
+      <div
+        class="forms-wrapper"
+        [style.transform]="'translateY(' + -(currentStep - 1) * 54 + '%)'"
+      >
+        <!-- Step 1: Personal Info -->
+        <form
+          class="form-step"
+          (ngSubmit)="goToNextStep()"
+          #form1="ngForm"
+          novalidate
+        >
+          <div class="image">
+            <img
+              [src]="imagePreview || '../../assets/images/profileicon.webp'"
+              alt="Upload Image"
+              class="profile-img"
+            />
+            <!-- <span class="add-icon" (click)="triggerFileInput()">
+              <i class="fas fa-plus"></i>
+            </span> -->
+            <input
+              type="file"
+              accept="image/*"
+              (change)="onImageSelected($event)"
+              #fileInput
+              required
+            />
+          </div>
+
+          <div class="profile-row">
+            <div class="profile-field">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                [(ngModel)]="userData.name"
+                required
+                readonly
+              />
+            </div>
+            <div class="profile-field">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                [(ngModel)]="userData.email"
+                required
+                readonly
+              />
+            </div>
+            <div class="profile-field">
+              <label for="number">Phone Number</label>
+              <input type="text" id="number" name="number" [(ngModel)]="phone" required />
+            </div>
+            <div class="profile-field">
+              <label for="location">Location</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="Enter your city or address"
+                [(ngModel)]="location"
+                required
+                ngModel
+              />
+            </div>
+            <div class="profile-field">
+              <label for="gender">Select Gender</label>
+              <select id="gender" name="gender"   [(ngModel)]="gender">
+                <option value="">-- Select Gender --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="profile-field">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" name="dob"   [(ngModel)]="dob" required />
+            </div>
+          </div>
+
+          <div class="btn">
+            <button type="submit" [disabled]="!form1.form.valid">
+              Continue
+            </button>
+          </div>
+        </form>
+
+        <!-- Step 2: Professional Info -->
+        <form
+          class="form-step"
+          (ngSubmit)="submitForm()"
+          #form2="ngForm"
+          novalidate
+        >
+          <div class="profile-row">
+            <div class="profile-field">
+              <label for="qualification">Qualification</label>
+              <input
+                type="text"
+                id="qualification"
+                name="qualification"
+                required
+                 [(ngModel)]="qualification"
+              />
+            </div>
+
+            <div class="profile-field">
+              <label for="experience">Experience (in years)</label>
+              <input
+                type="number"
+                id="experience"
+                name="experience"
+                required
+                 [(ngModel)]="experience"
+             
+              />
+            </div>
+
+            <div class="profile-field full-width">
+              <label for="skills">Skills (press Enter to add):</label>
+              <div class="tags-input">
+                <div class="tag" *ngFor="let skill of skills; let i = index">
+                  {{ skill }}
+                  <span class="remove" (click)="removeSkill(i)">×</span>
+                </div>
+                <input
+                  type="text"
+                  name="newSkill"
+                  (keydown.enter)="addSkill($event)"
+                  placeholder="Type and press enter"
+                   [(ngModel)]="newSkill"
+                   
+                />
+              </div>
+            </div>
+
+            <div class="profile-field full-width">
+              <label for="cv">Upload CV (PDF only)</label>
+              <input
+                type="file"
+                id="cv"
+                accept="application/pdf"
+                (change)="onCvSelected($event)"
+              />
+              <div *ngIf="cvFileName">Selected: {{ cvFileName }}</div>
+            </div>
+          </div>
+
+          <div class="btn">
+            <button type="submit" [disabled]="!form2.form.valid">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

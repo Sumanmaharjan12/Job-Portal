@@ -8,6 +8,7 @@ const app = express();
 // import routes
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
+const profileRoutes = require('./routes/profile-routes');
 
 // middleware
 const authMiddleware = require('./middleware/auth.middleware');
@@ -26,6 +27,12 @@ app.use('/api/auth',authRoutes);
 
 // mount user routes on api
 app.use('/api/user',userRoutes)
+
+// for profile
+app.use('/api/profile', profileRoutes);
+
+// Serve static uploaded files
+app.use('/uploads', express.static('uploads'));
 
 // debugger
 app.use((req, res, next) => {
