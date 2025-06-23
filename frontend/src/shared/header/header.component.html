@@ -27,7 +27,8 @@
   <!-- Show Profile icon and Logout button ONLY when logged in -->
   <div class="profile" *ngIf="isLoggedIn">
     <button (click)="goToProfile()" class="profilebtn">
-      <img src="../../assets/images/logo.webp" alt="Profile" />
+       <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile" loading="lazy" />
+  
     </button>
     <div class="logoutbtn">
       <button (click)="logout()">Logout</button>

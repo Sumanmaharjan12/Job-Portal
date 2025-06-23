@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,8 +9,30 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  profileImageUrl: string = '';
 
-  constructor(private router: Router, public authService: AuthService) {}
+  constructor(private router: Router, public authService: AuthService, private http:HttpClient) {}
+  
+ ngOnInit(): void {
+  const token = localStorage.getItem('token'); // Ensure token is stored after login
+
+  this.http.get<any>('http://localhost:5000/api/profile/check', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).subscribe({
+    next: (res) => {
+      if (res.imageUrl) {
+        this.profileImageUrl = 'http://localhost:5000/' + res.imageUrl;
+       console.log('Profile Image URL:', this.profileImageUrl);
+      }
+    },
+    error: (err) => {
+      console.error('Failed to load profile image', err);
+    }
+  });
+}
+
 
   goToLogin(): void {
     this.router.navigate(['/login']);
@@ -53,4 +76,5 @@ export class HeaderComponent {
   isPublic(): boolean {
     return !this.isLoggedIn;
   }
+  
 }

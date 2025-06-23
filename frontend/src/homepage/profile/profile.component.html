@@ -145,6 +145,7 @@
                   (keydown.enter)="addSkill($event)"
                   placeholder="Type and press enter"
                    [(ngModel)]="newSkill"
+                   required
                    
                 />
               </div>
@@ -157,6 +158,7 @@
                 id="cv"
                 accept="application/pdf"
                 (change)="onCvSelected($event)"
+                required
               />
               <div *ngIf="cvFileName">Selected: {{ cvFileName }}</div>
             </div>

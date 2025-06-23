@@ -81,7 +81,7 @@ router.get('/check', authMiddleware, async (req, res) => {
     const profile = await UserProfile.findById(userId);
 
     if (profile) {
-      return res.status(200).json({ exists: true });
+      return res.status(200).json({ exists: true,  imageUrl: profile.imageUrl });
     } else {
       return res.status(200).json({ exists: false });
     }
