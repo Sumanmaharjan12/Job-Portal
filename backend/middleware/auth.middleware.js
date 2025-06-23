@@ -17,7 +17,9 @@ const authenticate = (req, res, next) => {
     const decoded = jwt.verify(token, TOKENS.JWT_SECRET);
 
     // Attach decoded payload to the request object
-    req.user = decoded;
+      req.user = {
+       _id: decoded.userId
+    };
 
     // Proceed to the next middleware or route handler
     next();

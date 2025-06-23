@@ -56,7 +56,17 @@ updateProfile(data: FormData): Observable<any> {
 
   return this.http.post('http://localhost:5000/api/profile', data, { headers });
 }
+checkProfileExists() {
+  const token = localStorage.getItem('token');
+  const headers = {
+    Authorization: `Bearer ${token}`
+  };
 
+  return this.http.get<{ exists: boolean }>(
+    `http://localhost:5000/api/profile/check`,  // <-- Use correct profile route base here
+    { headers }
+  );
+}
   // --- Login State ---
   setLoginStatus(status: boolean) {
     this.isLoggedIn = status;

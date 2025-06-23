@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -46,14 +46,24 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     const user = this.authService.getUserData();
-    console.log('User data fetched from AuthService:', user);
+   
 
     if (user) {
-      this.userData.name = user.name;
-      this.userData.email = user.email;
-    } else {
-      console.log('No user data found.');
-    }
+    this.userData.name = user.name;
+    this.userData.email = user.email;
+
+    // Check if profile exists
+    this.authService.checkProfileExists().subscribe({
+      next: (res: { exists: boolean }) => {
+        if (res.exists) {
+          this.router.navigate(['/home']); // ⬅️ Redirect to homepage
+        }
+      },
+      error: (err) => {
+        console.error('Profile check failed:', err);
+      }
+    });
+  }
   }
 
   triggerFileInput() {
