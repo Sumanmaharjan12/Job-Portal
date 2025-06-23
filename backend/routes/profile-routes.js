@@ -44,6 +44,7 @@ router.post(
          profile = new UserProfile({ _id: userId, userId: userId });
       }
 
+
       // Update profile fields
         profile.userId = userId;
       profile.phone = phone;
