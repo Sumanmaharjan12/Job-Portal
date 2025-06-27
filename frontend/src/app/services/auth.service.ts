@@ -2,6 +2,18 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, tap } from "rxjs";
 
+export interface ProfileType {
+  phone: string;
+  location: string;
+  gender: string;
+  dob: string;
+  qualification: string;
+  experience: number;
+  skills: string[];
+  imageUrl?: string;
+  cvUrl?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -67,6 +79,30 @@ checkProfileExists() {
     { headers }
   );
 }
+
+
+  getProfileDetails(): Observable<ProfileType> {
+  const token = localStorage.getItem('token') || '';
+  const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+  return this.http.get<ProfileType>('http://localhost:5000/api/profile/details', { headers });
+}
+
+
+
+checkPhoneExists(phone: string) {
+  const token = localStorage.getItem('token');
+  const headers = {
+    Authorization: `Bearer ${token}`
+  };
+  
+  return this.http.get<{ exists: boolean }>(
+    `/api/profile/check-phone?phone=${encodeURIComponent(phone)}`,
+    { headers } 
+  );
+}
+
+
   // --- Login State ---
   setLoginStatus(status: boolean) {
     this.isLoggedIn = status;

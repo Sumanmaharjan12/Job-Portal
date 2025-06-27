@@ -1,5 +1,5 @@
 :root{
-    --font-family: 'Satoshi', sans-serif;
+    --font-family: 'Mulish', sans-serif;
     --Primary-color: #1768ff;
       --Secondary-color: #99ccff;
     --Background-color:#ffffff;
@@ -14,7 +14,8 @@
     --SubHeading-color: #5c5c5c;
 }
 * {
-  font-family: var(--Font-family);
+  font-family: var(--font-family);
   margin:0;
-  padding:0
+  padding:0;
+  line-height: 1.6;
 }

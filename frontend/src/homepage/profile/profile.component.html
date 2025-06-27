@@ -38,6 +38,17 @@
               required
             />
           </div>
+          <div
+            *ngIf="message"
+            class="alert"
+            [ngClass]="{
+              'alert-success': messageType === 'success',
+              'alert-danger': messageType === 'error',
+              'alert-warning': messageType === 'warning'
+            }"
+          >
+            {{ message }}
+          </div>
 
           <div class="profile-row">
             <div class="profile-field">
@@ -64,7 +75,13 @@
             </div>
             <div class="profile-field">
               <label for="number">Phone Number</label>
-              <input type="text" id="number" name="number" [(ngModel)]="phone" required />
+              <input
+                type="text"
+                id="number"
+                name="number"
+                [(ngModel)]="phone"
+                required
+              />
             </div>
             <div class="profile-field">
               <label for="location">Location</label>
@@ -78,9 +95,9 @@
                 ngModel
               />
             </div>
-            <div class="profile-field">
+            <div class="profile-field" *ngIf="userRole !== 'JobKeeper'">
               <label for="gender">Select Gender</label>
-              <select id="gender" name="gender"   [(ngModel)]="gender">
+              <select id="gender" name="gender" [(ngModel)]="gender"  >
                 <option value="">-- Select Gender --</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -88,9 +105,16 @@
                 <option value="Prefer not to say">Prefer not to say</option>
               </select>
             </div>
-            <div class="profile-field">
+            <div class="profile-field" *ngIf="userRole !== 'JobKeeper'" >
               <label for="dob">Date of Birth</label>
-              <input type="date" id="dob" name="dob"   [(ngModel)]="dob" required />
+              <input
+                type="date"
+                id="dob"
+                name="dob"
+                [(ngModel)]="dob"
+            
+                required
+              />
             </div>
           </div>
 
@@ -108,7 +132,7 @@
           #form2="ngForm"
           novalidate
         >
-          <div class="profile-row">
+          <div class="profile-row" *ngIf="userRole === 'JobSeeker'">
             <div class="profile-field">
               <label for="qualification">Qualification</label>
               <input
@@ -116,7 +140,7 @@
                 id="qualification"
                 name="qualification"
                 required
-                 [(ngModel)]="qualification"
+                [(ngModel)]="qualification"
               />
             </div>
 
@@ -127,8 +151,7 @@
                 id="experience"
                 name="experience"
                 required
-                 [(ngModel)]="experience"
-             
+                [(ngModel)]="experience"
               />
             </div>
 
@@ -144,9 +167,8 @@
                   name="newSkill"
                   (keydown.enter)="addSkill($event)"
                   placeholder="Type and press enter"
-                   [(ngModel)]="newSkill"
-                   required
-                   
+                  [(ngModel)]="newSkill"
+                  required
                 />
               </div>
             </div>
@@ -161,6 +183,62 @@
                 required
               />
               <div *ngIf="cvFileName">Selected: {{ cvFileName }}</div>
+            </div>
+          </div>
+          <!-- for hirer -->
+          <div class="profile-row" *ngIf="userRole === 'JobKeeper'">
+            <div class="profile-field">
+              <label for="companyName">Company Name</label>
+              <input
+                type="text"
+                id="companyName"
+                name="companyName"
+                required
+                [(ngModel)]="companyName"
+              />
+            </div>
+
+            <div class="profile-field">
+              <label for="companyAddress">Company Address</label>
+              <input
+                type="text"
+                id="companyAddress"
+                name="companyAddress"
+                required
+                [(ngModel)]="companyAddress"
+              />
+            </div>
+
+            <div class="profile-field">
+              <label for="companyWebsite">Company Website (optional)</label>
+              <input
+                type="url"
+                id="companyWebsite"
+                name="companyWebsite"
+                [(ngModel)]="companyWebsite"
+              />
+            </div>
+
+            <div class="profile-field">
+              <label for="establishedDate">Established Date</label>
+              <input
+                type="date"
+                id="establishedDate"
+                name="establishedDate"
+                required
+                [(ngModel)]="establishedDate"
+              />
+            </div>
+
+            <div class="profile-field">
+              <label for="jobOpenings">Number of Job Openings</label>
+              <input
+                type="number"
+                id="jobOpenings"
+                name="jobOpenings"
+                required
+                [(ngModel)]="jobOpenings"
+              />
             </div>
           </div>
 

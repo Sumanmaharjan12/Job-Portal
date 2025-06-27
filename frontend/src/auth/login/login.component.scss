@@ -3,6 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background:linear-gradient(135deg, #fff6f7 0%, #d6e6f2 100%);
    justify-content: flex-start;
     
 }
@@ -64,6 +65,9 @@ justify-content: center;
     color: var(--Background-color);
     border: none;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     font-weight: bold;
     font-size: var(--Subheading-size);
@@ -191,6 +195,9 @@ span{
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
     font-size: var(--Subheading-size);
     transition: 0.2s ease;

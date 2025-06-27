@@ -7,6 +7,7 @@ const UserProfileSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  role: { type: String, enum: ['JobSeeker', 'JobKeeper'], required: true },
   phone: String,
   location: String,
   gender: String,
@@ -15,7 +16,12 @@ const UserProfileSchema = new mongoose.Schema({
   experience: Number,
   skills: [String],
   cvUrl: String, // store file path or url
-  imageUrl: String // store profile image path or url
+  imageUrl: String, // store profile image path or url
+  companyName: String,
+  companyAddress: String,
+  companyWebsite: String,
+  establishedDate: Date,
+  jobOpenings: Number
 }, { timestamps: true });
 
 module.exports = mongoose.model('UserProfile', UserProfileSchema);

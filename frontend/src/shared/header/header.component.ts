@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
   profileImageUrl: string = '';
 
   constructor(private router: Router, public authService: AuthService, private http:HttpClient) {}
@@ -43,6 +43,7 @@ export class HeaderComponent {
   }
 
   goToProfile(): void {
+    console.log('Navigating to profile...');
     this.router.navigate(['/profile']);
   }
 
