@@ -160,9 +160,14 @@ justify-content: center;
   padding: 16px 12px;
   width: 160px;
   height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   border-radius: 10px;
+  border: 2px solid var(--Primary-color);
   font-size: var(--Subheading-size);
+  
 }
 .signup-role button.active{
   background-color: var(--Primary-color);

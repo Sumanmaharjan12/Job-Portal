@@ -61,7 +61,7 @@ router.post(
       // Seeker-specific
       if (role === 'JobSeeker') {
         profile.qualification = qualification || '';
-        profile.experience = experience ? Number(experience) : null;
+       profile.experience = experience || '';
         profile.skills = skillsArr || [];
 
         if (req.files['cv']) {

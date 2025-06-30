@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
   gender: string = '';
   dob: string = '';
   qualification: string = '';
-  experience: number | null = null;
+  experience: string = '';
   newSkill: string = '';
   phoneExists: boolean = false;
   companyName = '';
@@ -81,7 +81,7 @@ jobOpenings: number | null = null;
         this.gender = res.gender || '';
         this.dob = res.dob || '';
         this.qualification = res.qualification || '';
-        this.experience = res.experience || null;
+        this.experience = res.experience || '';
         this.skills = res.skills || [];
 
         // Optionally handle image preview and CV file info here
@@ -198,7 +198,7 @@ isAgeValid(): boolean {
 
     if (this.userRole === 'JobSeeker') {
       formData.append('qualification', this.qualification);
-      formData.append('experience', this.experience?.toString() || '');
+      formData.append('experience', this.experience);
       formData.append('skills', JSON.stringify(this.skills));
       if (this.cvFile) formData.append('cv', this.cvFile);
     } else if (this.userRole === 'JobKeeper') {

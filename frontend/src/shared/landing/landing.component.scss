@@ -24,13 +24,17 @@
 }
 button{
     padding: 16px 12px;
-    width: 120px;
-    height: 50px;
+    width: 200px;
+    height: 60px;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     background-color: var(--Primary-color);
     color: var(--Background-color);
     transition: 0.2ms ease;
+    font-size: var(--Subheading-size);
 }
 button:hover{
     background-color: var(--Secondary-color);

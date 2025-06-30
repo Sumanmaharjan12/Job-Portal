@@ -97,7 +97,7 @@
             </div>
             <div class="profile-field" *ngIf="userRole !== 'JobKeeper'">
               <label for="gender">Select Gender</label>
-              <select id="gender" name="gender" [(ngModel)]="gender"  >
+              <select id="gender" name="gender" [(ngModel)]="gender">
                 <option value="">-- Select Gender --</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -105,14 +105,13 @@
                 <option value="Prefer not to say">Prefer not to say</option>
               </select>
             </div>
-            <div class="profile-field" *ngIf="userRole !== 'JobKeeper'" >
+            <div class="profile-field" *ngIf="userRole !== 'JobKeeper'">
               <label for="dob">Date of Birth</label>
               <input
                 type="date"
                 id="dob"
                 name="dob"
                 [(ngModel)]="dob"
-            
                 required
               />
             </div>
@@ -145,14 +144,20 @@
             </div>
 
             <div class="profile-field">
-              <label for="experience">Experience (in years)</label>
-              <input
-                type="number"
+              <label for="experience">Experience</label>
+              <select
                 id="experience"
                 name="experience"
                 required
                 [(ngModel)]="experience"
-              />
+              >
+                <option value="" disabled selected>Select experience</option>
+                <option value="Intern">Intern</option>
+                <option value="Fresher">Fresher</option>
+                <option value="1-2 years">1-2 years</option>
+                <option value="3-5 years">3-5 years</option>
+                <option value="5+ years">5+ years</option>
+              </select>
             </div>
 
             <div class="profile-field full-width">

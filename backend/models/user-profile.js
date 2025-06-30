@@ -13,7 +13,7 @@ const UserProfileSchema = new mongoose.Schema({
   gender: String,
   dob: Date,
   qualification: String,
-  experience: Number,
+  experience: String,
   skills: [String],
   cvUrl: String, // store file path or url
   imageUrl: String, // store profile image path or url

@@ -27,8 +27,14 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['signup'] === 'true') {
         this.isSignup = true;
-      }
+      } 
+      const roleFromQuery = params['role'];
+    if (roleFromQuery === 'JobKeeper' || roleFromQuery === 'JobSeeker') {
+      this.isSignup = true;      // Ensure signup form shows
+      this.role = roleFromQuery; // Preselect role
+    }
     });
+    
   }
   
   togglePanel(){

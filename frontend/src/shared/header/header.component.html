@@ -2,8 +2,8 @@
   <div class="logo">
     <img src="../../assets/images/logo.webp" alt="logo" loading="lazy" />
   </div>
-  <div class="nav">
-    <nav>Home</nav>
+  <div class="nav" >
+    <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
 
     <!-- Show both if not logged in -->
     <nav *ngIf="isPublic()">Explore</nav>

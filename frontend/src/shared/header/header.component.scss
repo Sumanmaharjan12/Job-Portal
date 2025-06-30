@@ -27,6 +27,11 @@
     cursor: pointer;
     color: var(--Primary-color);
 }
+.nav a.active{
+    cursor: pointer;
+    color: var(--Primary-color);
+    text-decoration: none;
+}
 .btn{
     display: flex;
     flex-direction: row;

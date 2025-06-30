@@ -8,7 +8,7 @@ export interface ProfileType {
   gender: string;
   dob: string;
   qualification: string;
-  experience: number;
+  experience: string;
   skills: string[];
   imageUrl?: string;
   cvUrl?: string;

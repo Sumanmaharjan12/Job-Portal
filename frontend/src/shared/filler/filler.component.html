@@ -1,0 +1,21 @@
+<div class="filler">
+    <div class="jobkeeper">
+        <div class="left">
+            <img src="../../assets/images/filler/jobkeeper.jpg" alt="">
+        </div>
+        <div class="right">
+            <h1>Become a JobKeeper</h1>
+            <p>Join our platform to connect with employers, manage your professional profile, and find job opportunities tailored just for you. Start building your career today!</p>
+            <button [routerLink]="['/login']" [queryParams]="{ role: 'JobKeeper' }">Apply Now</button>
+        </div>
+    </div>
+    <div class="jobkeeper">
+        <div class="right">
+            <h1>Become a JobSeeker</h1>
+            <p>Create your profile, upload your CV, and explore thousands of job opportunities. Let employers find you and take the next step in your career journey.</p>
+            <button [routerLink]="['/login']" [queryParams]="{ role: 'JobSeeker' }">Apply Now</button>
+        </div>
+        <div class="left">
+            <img src="../../assets/images/filler/jobseeker.jpg" alt="">
+        </div>
+</div>
