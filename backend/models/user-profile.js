@@ -21,7 +21,11 @@ const UserProfileSchema = new mongoose.Schema({
   companyAddress: String,
   companyWebsite: String,
   establishedDate: Date,
-  jobOpenings: Number
+  jobOpenings: Number,
+  
+  // validator
+  riskLevel: { type: String, default: 'Safe' },
+  issues: { type: [String], default: [] }
 }, { timestamps: true });
 
 module.exports = mongoose.model('UserProfile', UserProfileSchema);

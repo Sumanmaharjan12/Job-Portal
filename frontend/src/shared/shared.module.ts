@@ -4,6 +4,7 @@ import { HeaderComponent } from './header/header.component';
 import { LandingComponent } from './landing/landing.component';
 import { RouterModule } from '@angular/router';
 import { FillerComponent } from './filler/filler.component';
+import { CategoryComponent } from './category/category.component';
 
 
 
@@ -11,7 +12,8 @@ import { FillerComponent } from './filler/filler.component';
   declarations: [
     HeaderComponent,
     LandingComponent,
-    FillerComponent
+    FillerComponent,
+    CategoryComponent
   ],
   imports: [
     CommonModule,
@@ -21,6 +23,7 @@ import { FillerComponent } from './filler/filler.component';
      HeaderComponent,
      LandingComponent,
      FillerComponent,
+     CategoryComponent,
      RouterModule
   ]
 })

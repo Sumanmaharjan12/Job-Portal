@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -6,6 +7,14 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent {
-constructor(public authService: AuthService) {}
+userRole: string | null = null;
+private roleSubscription!: Subscription;
+
+constructor(public authService: AuthService) {
+   this.roleSubscription = this.authService.userRole$.subscribe(role => {
+      this.userRole = role;
+  });
+}
 }

@@ -5,6 +5,7 @@ const path = require('path');
 const UserProfile = require('../models/user-profile');
 const authMiddleware = require('../middleware/auth.middleware');
 const { default: mongoose } = require('mongoose');
+const { validateBusiness } = require('../businessValidator');
 
 // Set up Multer storage
 const storage = multer.diskStorage({
@@ -77,7 +78,26 @@ router.post(
         profile.establishedDate = establishedDate ? new Date(establishedDate) : null;
         profile.jobOpenings = jobOpenings ? Number(jobOpenings) : null;
       }
+      // validation code
+      const {riskLevel, issues} = validateBusiness({
+        companyName: profile.companyName,
+        companyAddress: profile.companyAddress,
+        companyWebsite : profile.companyWebsite,
+        establishedDate : profile.establishedDate,
+        jobOpenings : profile.jobOpenings,
+      });
 
+      if(riskLevel === 'Likely Fake'){
+        return res.status(400).json({
+          message : 'Fake business detected',
+          riskLevel,
+          issues,
+        });
+        
+      }
+
+      profile.riskLevel = riskLevel;
+      profile.issues = issues;
       await profile.save();
 
       res.status(200).json({ message: 'Profile saved successfully', profile });

@@ -108,17 +108,41 @@ jobOpenings: number | null = null;
     }
   }
 
-  onCvSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file && file.type === 'application/pdf') {
-      this.cvFile = file;
-      this.cvFileName = file.name;
-    } else {
-      this.cvFile = null;
-      this.cvFileName = null;
-      alert('Please upload a valid PDF file.');
-    }
+ onCvSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  const maxSize = 800 * 1024; // 800 KB
+
+  if (!file) {
+    this.cvFile = null;
+    this.cvFileName = null;
+    return;
   }
+
+  // Type check
+  if (file.type !== 'application/pdf') {
+    alert('Only PDF files are allowed.');
+    input.value = ''; // reset input
+    this.cvFile = null;
+    this.cvFileName = null;
+    return;
+  }
+
+  // Size check
+  if (file.size > maxSize) {
+    alert('File size must be less than 800 KB.');
+    input.value = ''; // reset input
+    this.cvFile = null;
+    this.cvFileName = null;
+    return;
+  }
+
+  // Valid file
+  this.cvFile = file;
+  this.cvFileName = file.name;
+}
+
+
 
   goToNextStep() {
   if (!this.isAgeValid()) {
