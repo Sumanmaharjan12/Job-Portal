@@ -13,7 +13,7 @@
     width: 40%;
     height: auto;
 }
-.nav{
+.nav,a{
     display: flex;
     flex-direction: row;
     gap: 40px;
@@ -21,12 +21,14 @@
     font-size: var(--Subheading-size);
     font-weight: 500;
     color: var(--Black-color);
+    text-decoration: none;
 
 }
 .nav nav:hover{
     cursor: pointer;
     color: var(--Primary-color);
 }
+
 .nav a.active{
     cursor: pointer;
     color: var(--Primary-color);

@@ -2,8 +2,13 @@
   <div class="logo">
     <img src="../../assets/images/logo.webp" alt="logo" loading="lazy" />
   </div>
-  <div class="nav" >
-    <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+  <div class="nav">
+    <a
+      routerLink="/home"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
 
     <!-- Show both if not logged in -->
     <nav *ngIf="isPublic()">Explore</nav>
@@ -13,7 +18,14 @@
     <nav *ngIf="isJobSeeker()">Explore</nav>
 
     <!-- Show only if JobKeeper -->
-      <nav *ngIf="isJobKeeper()">Post A Job</nav>
+    <a
+      *ngIf="isJobKeeper()"
+      routerLink="/post-job"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Post A Job
+    </a>
     <nav *ngIf="isJobKeeper()">Hire</nav>
 
     <nav>Top Companies</nav>
@@ -27,8 +39,12 @@
   <!-- Show Profile icon and Logout button ONLY when logged in -->
   <div class="profile" *ngIf="isLoggedIn">
     <button (click)="goToProfile()" class="profilebtn">
-       <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile" loading="lazy" />
-  
+      <img
+        *ngIf="profileImageUrl"
+        [src]="profileImageUrl"
+        alt="Profile"
+        loading="lazy"
+      />
     </button>
     <div class="logoutbtn">
       <button (click)="logout()">Logout</button>

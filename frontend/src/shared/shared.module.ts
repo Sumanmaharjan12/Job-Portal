@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { CategoryComponent } from './category/category.component';
+import { FillerComponent } from './filler/filler.component';
 import { HeaderComponent } from './header/header.component';
 import { LandingComponent } from './landing/landing.component';
-import { RouterModule } from '@angular/router';
-import { FillerComponent } from './filler/filler.component';
-import { CategoryComponent } from './category/category.component';
+import { PostajobComponent } from './postajob/postajob.component';
 
 
 
@@ -13,17 +15,20 @@ import { CategoryComponent } from './category/category.component';
     HeaderComponent,
     LandingComponent,
     FillerComponent,
-    CategoryComponent
+    CategoryComponent,
+    PostajobComponent
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   exports: [
      HeaderComponent,
      LandingComponent,
      FillerComponent,
      CategoryComponent,
+     PostajobComponent,
      RouterModule
   ]
 })

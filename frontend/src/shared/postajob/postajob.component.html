@@ -1,0 +1,121 @@
+<app-header></app-header>
+<div class="post">
+  <form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+    <div class="left">
+      <h1>Post a Job</h1>
+      <div class="content">
+        <label for="title">Job Title</label>
+        <input type="text" name="title" id="title" formControlName="title" />
+      </div>
+      <div class="content">
+        <label for="description">Job Description</label>
+        <p class="description-text">
+          Please provide a detailed overview of the job role, including responsibilities, skills.
+        </p>
+        <textarea name="description" id="description" formControlName="description"></textarea>
+      </div>
+      <div class="content">
+        <label for="category">Job Category</label>
+        <select id="category" name="category" formControlName="category" required>
+          <option value="">-- Select Category --</option>
+          <option value="design">Graphic & Design</option>
+          <option value="programming">Programming & Tech</option>
+          <option value="marketing">Digital Marketing</option>
+          <option value="writing">Writing & Translation</option>
+          <option value="business">Business & Consulting</option>
+        </select>
+      </div>
+      <div class="content">
+        <label for="type">Job Type</label>
+        <select id="type" name="type" formControlName="type" required>
+          <option value="">-- Select Type --</option>
+          <option value="full-time">Full-Time</option>
+          <option value="part-time">Part-Time</option>
+          <option value="internship">Internship</option>
+          <option value="freelance">Freelance</option>
+        </select>
+      </div>
+      <div class="content">
+        <label for="salary">Salary (optional)</label>
+        <input
+          type="number"
+          id="salary"
+          name="salary"
+          placeholder="e.g. 50000"
+          formControlName="salary"
+        />
+      </div>
+    </div>
+    <!-- requirement -->
+    <div class="right">
+      <div class="container">
+        <h1>Requirement</h1>
+        <div class="content">
+          <p class="description-text">
+            Please fill out the key requirements for this job.
+          </p>
+
+          <!-- Experience Level -->
+          <div class="content">
+            <label for="experience">Experience Level</label>
+            <select id="experience" name="experience" formControlName="experience" required>
+              <option value="">-- Select Experience Level --</option>
+              <option value="entry">Entry Level (0–1 years)</option>
+              <option value="mid">Mid Level (2–4 years)</option>
+              <option value="senior">Senior Level (5+ years)</option>
+            </select>
+          </div>
+        </div>
+        <div class="content">
+          <label for="education">Education</label>
+          <input
+            type="text"
+            id="education"
+            name="education"
+            placeholder="e.g. Bachelor's in Computer Science"
+            formControlName="education"
+            required
+          />
+        </div>
+        <div class="content">
+          <label for="skills">Required Skills</label>
+          <input
+            type="text"
+            id="skills"
+            name="skills"
+            placeholder="e.g. JavaScript, React, Figma"
+            formControlName="skills"
+            required
+          />
+        </div>
+        <div class="content">
+          <label for="language">Preferred Language (optional)</label>
+          <input
+            type="text"
+            id="language"
+            name="language"
+            placeholder="e.g. English, Nepali"
+            formControlName="language"
+          />
+        </div>
+        <div class="content">
+          <label for="softSkills">Soft Skills (optional)</label>
+          <input
+            type="text"
+            id="softSkills"
+            name="softSkills"
+            placeholder="e.g. Teamwork, Communication, Leadership"
+            formControlName="softSkills"
+          />
+        </div>
+      </div>
+      <div class="btn">
+        <button type="submit" class="Submit">Submit</button>
+        <button type="button" class="Cancel">Cancel</button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="toastMessage" [ngClass]="toastClass" class="toast">
+    {{ toastMessage }}
+  </div>
+</div>

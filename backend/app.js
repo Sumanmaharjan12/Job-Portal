@@ -9,6 +9,7 @@ const app = express();
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 const profileRoutes = require('./routes/profile-routes');
+const jobRoutes = require("./routes/jobRoutes");
 
 // middleware
 const authMiddleware = require('./middleware/auth.middleware');
@@ -30,6 +31,9 @@ app.use('/api/user',userRoutes)
 
 // for profile
 app.use('/api/profile', profileRoutes);
+
+// for job
+app.use('/api/jobs',authMiddleware,jobRoutes);
 
 // Serve static uploaded files
 app.use('/uploads', express.static('uploads'));
