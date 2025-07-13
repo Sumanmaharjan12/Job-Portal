@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const User = require('../models/user.model')
 const UserProfile = require('../models/user-profile');
 const authMiddleware = require('../middleware/auth.middleware');
 const { default: mongoose } = require('mongoose');
@@ -146,6 +147,103 @@ router.get('/check-phone', authMiddleware, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+// update profile
+router.put('/update',authMiddleware, upload.fields([
+  {name: 'image', maxCount: 1},
+  {name: 'cv', maxCount:1}
+]),
+async(req, res) =>{
+  try{
+    const userId = req.user._id;
+    const{
+      role,
+      phone,
+      location,
+      gender,
+      dob,
+      qualification,
+      experience,
+      skills,
+      companyName,
+      companyAddress,
+      companyWebsite,
+      establishedDate,
+      jobOpenings
+    } = req.body;
+
+    if(!role || !['JobSeeker', 'JobKeeper'].includes(role)){
+      return res.status(400).json({message: 'Invalid or missing role'});
+    }
+    let skillsArr = [];
+      if (skills) {
+        if (typeof skills === 'string') {
+          try {
+            skillsArr = JSON.parse(skills);
+          } catch (err) {
+            console.warn('[WARN] skills is not valid JSON, fallback to split by comma');
+            skillsArr = skills.split(',').map(s => s.trim());
+          }
+        } else if (Array.isArray(skills)) {
+          skillsArr = skills;
+        }
+      }
+    let profile = await UserProfile.findOne({userId});
+
+    if(!profile){
+      return res.status(404).json({message: 'Profile not found'});
+    }
+    profile.phone = phone || '';
+    profile.location = location || '';
+    profile.gender = gender || '';
+    profile.dob = dob?new Date(dob):null;
+
+    if(req.files && req.files['image']){
+      profile.imageUrl = req.files['image'][0].path;
+    }
+
+    // update jobseeker
+    if(role === 'JobSeeker'){
+      profile.qualification = qualification || '';
+      profile.experience = experience || '';
+      profile.skills = skillsArr || [];
+      if(req.files && req.files['cv']){
+        profile.cvUrl = req.files['cv'][0].path
+      }
+    }
+    // JobKeeper
+    if(role ==='JobKeeper'){
+      profile.companyName = companyName || '';
+      profile.companyAddress = companyAddress || '';
+      profile.companyWebsite = companyWebsite || '';
+      profile.establishedDate = establishedDate ? new Date(establishedDate):null;
+      profile.jobOpenings = jobOpenings ? Number(jobOpenings):null;
+    }
+    // validate business fields
+    const {riskLevel, issues} = validateBusiness({
+      companyName : profile.companyName,
+      companyAddress : profile.companyAddress,
+      companyWebsite : profile.companyWebsite,
+      establishedDate: profile.establishedDate,
+      jobOpenings: profile.jobOpenings,
+    });
+    if(riskLevel === 'Likely Fake'){
+      return res.status(400).json({
+        message: 'Fake Business detected',
+        riskLevel,
+        issues,
+      });
+    }
+    profile.riskLevel = riskLevel;
+    profile.issues = issues;
+    
+    await profile.save();
+    res.status(200).json({message: 'Profile updated successfully',profile});
+   }catch(error){
+    console.error('Profile update Error', error);
+    res.status(500).json({message: 'Internal server error'});
+   }
+  }
+);
 
 // Get full profile
 router.get('/details', authMiddleware, async (req, res) => {
@@ -156,6 +254,7 @@ router.get('/details', authMiddleware, async (req, res) => {
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     }
+    const user = await User.findById(userId).select('name email');
 
     const common = {
       role: profile.role,
@@ -163,7 +262,9 @@ router.get('/details', authMiddleware, async (req, res) => {
       location: profile.location,
       gender: profile.gender,
       dob: profile.dob,
-      imageUrl: profile.imageUrl
+      imageUrl: profile.imageUrl,
+       name: user ? user.name : '',
+    email: user ? user.email : ''
     };
 
     const seekerData = profile.role === 'JobSeeker'

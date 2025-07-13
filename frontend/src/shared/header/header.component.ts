@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit{
 
   goToProfile(): void {
     console.log('Navigating to profile...');
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/profiledetail']);
   }
 
   logout(): void {

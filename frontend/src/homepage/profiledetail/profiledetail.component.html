@@ -1,0 +1,225 @@
+<app-header></app-header>
+<div *ngIf="toastMessage" [ngClass]="toastClass" class="toast">
+  {{ toastMessage }}
+</div>
+<div class="profile">
+  <h1>Your Profile</h1>
+  <div class="container">
+    <div class="left">
+      <img
+        *ngIf="profile.imageUrl"
+        [src]="'http://localhost:5000/' + profile.imageUrl"
+        alt="Profile Image"
+      />
+    </div>
+
+    <div class="right">
+      <!-- COMMON FIELDS -->
+      <div class="profile-field">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          [(ngModel)]="profile.name"
+          [readonly]="!isEditing"
+        />
+      </div>
+
+      <div class="profile-field">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="profile.email"
+          [readonly]="!isEditing"
+        />
+      </div>
+
+      <div class="profile-field">
+        <label for="number">Phone Number</label>
+        <input
+          type="text"
+          id="number"
+          [(ngModel)]="profile.phone"
+          [readonly]="!isEditing"
+        />
+      </div>
+
+      <!-- JOB SEEKER ONLY -->
+      <ng-container *ngIf="role === 'JobSeeker'">
+        <div class="profile-field">
+          <label for="location">Location</label>
+          <input
+            type="text"
+            id="location"
+            [(ngModel)]="profile.location"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="gender">Gender</label>
+          <input
+            type="text"
+            id="gender"
+            [(ngModel)]="profile.gender"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="dob">Date of Birth</label>
+          <input
+            type="text"
+            id="dob"
+            [(ngModel)]="profile.dob"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="qualification">Qualification</label>
+          <input
+            type="text"
+            id="qualification"
+            [(ngModel)]="profile.qualification"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="experience">Experience</label>
+          <input
+            type="text"
+            id="experience"
+            [(ngModel)]="profile.experience"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="skills">Skills</label>
+          <input
+            type="text"
+            id="skills"
+            [(ngModel)]="profile.skills"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="cv">Uploaded CV</label>
+          <input
+            type="text"
+            [value]="profile.cvUrl ? profile.cvUrl : 'No file chosen'"
+            readonly
+          />
+
+          <input
+            type="file"
+            id="cv"
+            (change)="onFileSelected($event)"
+            #fileInput
+            style="display: none"
+            [disabled]="!isEditing"
+          />
+
+          <div class="btn">
+            <button
+              type="button"
+              (click)="fileInput.click()"
+              [disabled]="!isEditing"
+            >
+              Choose New File
+            </button>
+
+            <div *ngIf="profile.cvUrl" style="margin-top: 5px">
+              <a
+                [href]="'http://localhost:5000/' + profile.cvUrl"
+                target="_blank"
+                rel="noopener"
+              >
+                View CV
+              </a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- JOB KEEPER ONLY -->
+      <ng-container *ngIf="role === 'JobKeeper'">
+        <div class="profile-field">
+          <label for="companyName">Company Name</label>
+          <input
+            type="text"
+            id="companyName"
+            [(ngModel)]="profile.companyName"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="companyAddress">Company Address</label>
+          <input
+            type="text"
+            id="companyAddress"
+            [(ngModel)]="profile.companyAddress"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="companyWebsite">Company Website</label>
+          <input
+            type="text"
+            id="companyWebsite"
+            [(ngModel)]="profile.companyWebsite"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="establishedDate">Established Date</label>
+          <input
+            type="text"
+            id="establishedDate"
+            [(ngModel)]="profile.establishedDate"
+            [readonly]="!isEditing"
+          />
+        </div>
+
+        <div class="profile-field">
+          <label for="jobOpenings">Number of Job Openings</label>
+          <input
+            type="text"
+            id="jobOpenings"
+            [(ngModel)]="profile.jobOpenings"
+            [readonly]="!isEditing"
+          />
+        </div>
+      </ng-container>
+
+      <!-- Edit & Save buttons -->
+      <div class="updatebtn">
+        <button
+          type="button"
+          (click)="onEdit()"
+          [disabled]="isEditing"
+          [class.active]="!isEditing"
+          [class.inactive]="isEditing"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          (click)="onSave()"
+          [disabled]="!isEditing"
+          [class.active]="isEditing"
+          [class.inactive]="!isEditing"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

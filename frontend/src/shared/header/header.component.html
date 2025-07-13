@@ -27,8 +27,8 @@
       Post A Job
     </a>
     <nav *ngIf="isJobKeeper()">Hire</nav>
-
-    <nav>Top Companies</nav>
+    <nav *ngIf="isJobSeeker()">Job Detail</nav>
+    <nav *ngIf="isJobKeeper()">Job Posted</nav>
   </div>
 
   <div class="btn" *ngIf="!isLoggedIn">
