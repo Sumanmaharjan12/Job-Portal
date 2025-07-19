@@ -111,13 +111,14 @@
           <label for="cv">Uploaded CV</label>
           <input
             type="text"
-            [value]="profile.cvUrl ? profile.cvUrl : 'No file chosen'"
+            [value]="selectedFileName || profile.cvUrl || 'No file Chosen'"
             readonly
           />
 
           <input
             type="file"
             id="cv"
+            accept=".pdf"
             (change)="onFileSelected($event)"
             #fileInput
             style="display: none"
@@ -178,25 +179,30 @@
           />
         </div>
 
-        <div class="profile-field">
-          <label for="establishedDate">Established Date</label>
-          <input
-            type="text"
-            id="establishedDate"
-            [(ngModel)]="profile.establishedDate"
-            [readonly]="!isEditing"
-          />
-        </div>
+      <div class="profile-field">
+  <label for="establishedDate">Established Date</label>
+  <input
+    type="text"
+    id="establishedDate"
+    [(ngModel)]="profile.establishedDate"
+    [readonly]="!isEditing || role === 'JobKeeper'"
+  />
+</div>
 
-        <div class="profile-field">
-          <label for="jobOpenings">Number of Job Openings</label>
-          <input
-            type="text"
-            id="jobOpenings"
-            [(ngModel)]="profile.jobOpenings"
-            [readonly]="!isEditing"
-          />
-        </div>
+<div class="profile-field">
+  <label for="jobOpenings">Number of Job Openings</label>
+  <input
+    type="text"
+    id="jobOpenings"
+    [(ngModel)]="profile.jobOpenings"
+    [readonly]="!isEditing || role === 'JobKeeper'"
+  />
+</div>
+
+<!-- ✅ Message for JobKeeper -->
+<div *ngIf="role === 'JobKeeper'" class="readonly-message">
+  <p style="color: #b33;">Note: As a JobKeeper, you cannot edit the Established Date or Job Openings fields.</p>
+</div>
       </ng-container>
 
       <!-- Edit & Save buttons -->

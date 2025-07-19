@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit{
   constructor(private router: Router, public authService: AuthService, private http:HttpClient) {}
   
  ngOnInit(): void {
-  const token = localStorage.getItem('token'); // Ensure token is stored after login
+  const token = sessionStorage.getItem('token'); // Ensure token is stored after login
 
   this.http.get<any>('http://localhost:5000/api/profile/check', {
     headers: {

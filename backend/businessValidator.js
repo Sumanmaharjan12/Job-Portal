@@ -1,6 +1,10 @@
 const moment = require('moment');
 
 function validateBusiness(data){
+    if(data.role === 'JobSeeker'){
+        return { riskLevel: undefined, issues: [] };
+    }
+
     const issues =[];
 
     if (

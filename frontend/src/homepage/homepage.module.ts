@@ -7,13 +7,15 @@ import { HomeComponent } from './home/home.component';
 import { HomepageRoutingModule } from './homepage-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfiledetailComponent } from './profiledetail/profiledetail.component';
+import { PostedjobComponent } from './postedjob/postedjob.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     ProfileComponent,
-    ProfiledetailComponent
+    ProfiledetailComponent,
+    PostedjobComponent
   ],
   imports: [
     CommonModule,

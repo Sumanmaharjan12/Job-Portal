@@ -1,0 +1,34 @@
+.posted{
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    padding: 60px 60px;
+    gap: 40px;
+}
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.content th,
+.content td {
+  border: 1px solid var(--Black-color);
+  padding: 8px;
+  text-align: center;
+  font-size: var(--body-size);
+}
+.button{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.button i{
+  font-size: var(--body-size);
+}
+.button .fa-pen-to-square:hover{
+  color: var(--Primary-color);
+}
+.button .fa-trash:hover{
+  color: var(--delete-color);
+}
+

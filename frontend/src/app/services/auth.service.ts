@@ -21,7 +21,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:5000/api/auth';
 
   // Login and role
-  private isLoggedIn = !!localStorage.getItem('isLoggedIn');
+  private isLoggedIn = !!sessionStorage.getItem('isLoggedIn');
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn);
   private userRoleSubject = new BehaviorSubject<string | null>(localStorage.getItem('role'));
 
@@ -43,10 +43,10 @@ export class AuthService {
       tap((response: any) => {
         // Assuming your backend sends { token, user, role, ... }
         if (response.token) {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('user', JSON.stringify(response.user));
-          localStorage.setItem('role', response.role);
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('user', JSON.stringify(response.user));
+          sessionStorage.setItem('role', response.role);
 
           this.isLoggedInSubject.next(true);
           this.userDataSubject.next(response.user);
@@ -60,7 +60,7 @@ export class AuthService {
 updateProfile(data: FormData): Observable<any> {
   console.log('updateProfile called');
 
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
 
   const headers = new HttpHeaders({
     Authorization: `Bearer ${token}`
@@ -69,7 +69,7 @@ updateProfile(data: FormData): Observable<any> {
   return this.http.post('http://localhost:5000/api/profile', data, { headers });
 }
 checkProfileExists() {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   const headers = {
     Authorization: `Bearer ${token}`
   };
@@ -82,7 +82,7 @@ checkProfileExists() {
 
 
   getProfileDetails(): Observable<ProfileType> {
-  const token = localStorage.getItem('token') || '';
+  const token = sessionStorage.getItem('token') || '';
   const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
   return this.http.get<ProfileType>('http://localhost:5000/api/profile/details', { headers });
@@ -91,7 +91,7 @@ checkProfileExists() {
 
 
 checkPhoneExists(phone: string) {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   const headers = {
     Authorization: `Bearer ${token}`
   };
@@ -107,9 +107,9 @@ checkPhoneExists(phone: string) {
   setLoginStatus(status: boolean) {
     this.isLoggedIn = status;
     if (status) {
-      localStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('isLoggedIn', 'true');
     } else {
-      localStorage.removeItem('isLoggedIn');
+      sessionStorage.removeItem('isLoggedIn');
     }
     this.isLoggedInSubject.next(status);
   }
@@ -120,39 +120,39 @@ checkPhoneExists(phone: string) {
 
   // --- User Role ---
   setUserRole(role: string) {
-    localStorage.setItem('role', role);
+    sessionStorage.setItem('role', role);
     this.userRoleSubject.next(role);
   }
 
   getUserRole(): string | null {
-    return localStorage.getItem('role');
+    return sessionStorage.getItem('role');
   }
 
   // --- User Data ---
   setUserData(user: any) {
     this.userDataSubject.next(user);
-    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('user', JSON.stringify(user));
   }
 
   getUserData(): any {
     if (this.userDataSubject.value) {
       return this.userDataSubject.value;
     }
-    const user = localStorage.getItem('user');
+    const user = sessionStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
 
   private getUserFromStorage(): any | null {
-    const user = localStorage.getItem('user');
+    const user =  sessionStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
   
 
   // --- Logout ---
   logout() {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('role');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('role');
+    sessionStorage.removeItem('user');
     this.isLoggedInSubject.next(false);
     this.userRoleSubject.next(null);
     this.userDataSubject.next(null);

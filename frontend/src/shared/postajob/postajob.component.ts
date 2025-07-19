@@ -36,9 +36,19 @@ export class PostajobComponent {
     return;
   }
 
-  const jobData = this.jobForm.value;
+  const jobData = {...this.jobForm.value};
+
+  if(jobData.skills && typeof jobData.skills ==='string'){
+   jobData.skills = jobData.skills
+  .split(',')
+  .map((skill: string) => skill.trim())
+  .filter((skill: string) => skill.length > 0);
+  }
+  else{
+    jobData.skills=[];
+  }
   console.log('Posting job data:', jobData);
-  const token = localStorage.getItem('token'); 
+  const token = sessionStorage.getItem('token'); 
 
   // Prepare headers with the token
   const headers = {

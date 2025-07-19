@@ -1,0 +1,59 @@
+<app-header></app-header>
+<div class="posted">
+  <div class="head">
+    <h1>Posted Jobs</h1>
+  </div>
+  <div class="content">
+    <table>
+      <thead>
+        <tr>
+          <th>S.N</th>
+          <th>Title</th>
+
+          <th>Category</th>
+          <th>Type</th>
+          <th>Salary</th>
+          <th>Experience</th>
+          <th>Education</th>
+          <th>Skills</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let job of jobs; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ job.title }}</td>
+          <!-- <td>
+            {{
+              job.description?.split(" ").slice(0, 10).join(" ") +
+                (job.description.split(" ").length > 10 ? "..." : "")
+            }}
+          </td> -->
+          <td>{{ job.category }}</td>
+          <td>{{ job.type }}</td>
+          <td>{{ job.salary || "-" }}</td>
+          <td>{{ job.experience }}</td>
+          <td>{{ job.education }}</td>
+          <td>
+            {{
+              job.skills
+                ? job.skills.join
+                  ? job.skills.join(", ")
+                  : job.skills
+                : "-"
+            }}
+          </td>
+          <td>{{ job.status }}</td>
+          <td>
+            <!-- Add your edit/delete buttons here -->
+           <div class="button">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <i class="fa-solid fa-trash"></i>
+           </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

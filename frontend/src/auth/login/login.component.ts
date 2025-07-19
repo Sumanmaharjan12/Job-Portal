@@ -84,8 +84,8 @@ export class LoginComponent implements OnInit {
           name: res.user.name,
           email: res.user.email
           });  // save role here
-         console.log('Role saved:', localStorage.getItem('role'));
-        console.log('User data saved:', localStorage.getItem('user'));
+         console.log('Role saved:', sessionStorage.getItem('role'));
+        console.log('User data saved:', sessionStorage.getItem('user'));
            this.router.navigate(['/profile']);
         },
         error : (err) => this.setMessage('Please check your email or password',err)

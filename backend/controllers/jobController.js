@@ -27,6 +27,12 @@ const postJob = async(req, res)=> {
             ...req.body,
             postedBy: userID,
             status: "pending",
+        };
+        if (typeof jobData.skills === 'string') {
+            jobData.skills = jobData.skills
+            .split(',')
+            .map(skill => skill.trim())
+            .filter(skill => skill.length > 0);
         }
         const newJob = new Job(jobData);
         await newJob.save();
@@ -38,8 +44,11 @@ const postJob = async(req, res)=> {
 };
 const getJob = async (req, res) => {
   try {
-    const jobs = await Job.find({status: { $in: ['posted', 'pending'] }})
-      .populate('postedBy', '_id companyName imageUrl jobOpenings') // populate these fields from the user profile
+    const userId = req.user._id;
+    const jobs = await Job.find({
+      postedBy:userId,
+      status: { $in: ['posted', 'pending']
+    }}).populate('postedBy', '_id companyName imageUrl jobOpenings') // populate these fields from the user profile
       .exec();
       
       // calculate remaining JobOpenings

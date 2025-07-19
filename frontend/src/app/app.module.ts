@@ -12,7 +12,8 @@ import { HomepageModule } from 'src/homepage/homepage.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+ 
   ],
   imports: [
     BrowserModule,

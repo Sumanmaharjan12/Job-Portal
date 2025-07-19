@@ -52,7 +52,7 @@ jobOpenings: number | null = null;
   
 
   ngOnInit() {
-  this.userRole = localStorage.getItem('role') || ''; // 'seeker' or 'hirer'
+  this.userRole = sessionStorage.getItem('role') || ''; // 'seeker' or 'hirer'
     const user = this.authService.getUserData();
    
 

@@ -28,7 +28,14 @@
     </a>
     <nav *ngIf="isJobKeeper()">Hire</nav>
     <nav *ngIf="isJobSeeker()">Job Detail</nav>
-    <nav *ngIf="isJobKeeper()">Job Posted</nav>
+     <a
+      *ngIf="isJobKeeper()"
+      routerLink="/job-posted"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Job Posted
+    </a>
   </div>
 
   <div class="btn" *ngIf="!isLoggedIn">
