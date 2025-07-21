@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfiledetailComponent } from './profiledetail/profiledetail.component';
 import { PostedjobComponent } from './postedjob/postedjob.component';
+import { ApplyjobComponent } from './applyjob/applyjob.component';
 
 const routes: Routes = [
    {
@@ -21,6 +22,10 @@ const routes: Routes = [
      {
       path:'postedjob',
       component:PostedjobComponent
+    },
+    {
+      path:'applyjob',
+      component:ApplyjobComponent
     }
 ];
 

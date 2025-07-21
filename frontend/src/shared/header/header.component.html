@@ -15,7 +15,13 @@
     <nav *ngIf="isPublic()">Hire</nav>
 
     <!-- Show only if JobSeeker -->
-    <nav *ngIf="isJobSeeker()">Explore</nav>
+    <a
+      *ngIf="isJobSeeker()"
+      routerLink="/applyjob"
+      routerLinkActive="active"
+    >
+      Explore
+    </a>
 
     <!-- Show only if JobKeeper -->
     <a
@@ -28,7 +34,7 @@
     </a>
     <nav *ngIf="isJobKeeper()">Hire</nav>
     <nav *ngIf="isJobSeeker()">Job Detail</nav>
-     <a
+    <a
       *ngIf="isJobKeeper()"
       routerLink="/job-posted"
       routerLinkActive="active"

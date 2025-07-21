@@ -8,6 +8,7 @@ import { HomepageRoutingModule } from './homepage-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfiledetailComponent } from './profiledetail/profiledetail.component';
 import { PostedjobComponent } from './postedjob/postedjob.component';
+import { ApplyjobComponent } from './applyjob/applyjob.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { PostedjobComponent } from './postedjob/postedjob.component';
     HomeComponent,
     ProfileComponent,
     ProfiledetailComponent,
-    PostedjobComponent
+    PostedjobComponent,
+    ApplyjobComponent
   ],
   imports: [
     CommonModule,

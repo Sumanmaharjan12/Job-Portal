@@ -1,4 +1,7 @@
 <app-header></app-header>
+<div *ngIf="toastMessage" [ngClass]="toastClass" class="toast">
+  {{ toastMessage }}
+</div>
 <div class="posted">
   <div class="head">
     <h1>Posted Jobs</h1>
@@ -7,7 +10,7 @@
     <table>
       <thead>
         <tr>
-          <th>S.N</th>
+          <th>Job Id</th>
           <th>Title</th>
 
           <th>Category</th>
@@ -21,8 +24,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let job of jobs; index as i">
-          <td>{{ i + 1 }}</td>
+        <tr *ngFor="let job of jobs">
+          <td>{{ job.jobId }}</td>
           <td>{{ job.title }}</td>
           <!-- <td>
             {{
@@ -47,13 +50,115 @@
           <td>{{ job.status }}</td>
           <td>
             <!-- Add your edit/delete buttons here -->
-           <div class="button">
-            <i class="fa-solid fa-pen-to-square"></i>
-            <i class="fa-solid fa-trash"></i>
-           </div>
+            <div class="button">
+              <i
+                class="fa-solid fa-pen-to-square"
+                (click)="openEditModal(job)"
+              ></i>
+              <i class="fa-solid fa-trash" (click)="deleteJob(job.jobId)"></i>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- update overlay -->
+
+  <div class="modal-overlay" *ngIf="editModalVisible">
+    <div class="modal-content">
+      <h2>Edit Job</h2>
+      <form (ngSubmit)="saveJob()">
+        <div class="form-content full-width">
+          <label>Title</label>
+          <input [(ngModel)]="editJobData.title" name="title" required />
+        </div>
+
+        <div class="form-content full-width">
+          <label>Description</label>
+          <textarea
+            [(ngModel)]="editJobData.description"
+            name="description"
+          ></textarea>
+        </div>
+
+        <!-- Row container for 2 fields per row -->
+        <div class="form-row">
+          <div class="form-content half-width">
+            <label>Category</label>
+            <select [(ngModel)]="editJobData.category" name="category" required>
+              <option value="">-- Select Category --</option>
+              <option value="Graphic & Design">Graphic & Design</option>
+              <option value="Programming & Tech">Programming & Tech</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Writing & Translation">
+                Writing & Translation
+              </option>
+              <option value="Business & Consulting">
+                Business & Consulting
+              </option>
+            </select>
+          </div>
+
+          <div class="form-content half-width">
+            <label>Type</label>
+            <select [(ngModel)]="editJobData.type" name="type" required>
+              <option value="">-- Select Type --</option>
+              <option value="Full-Time">Full-Time</option>
+              <option value="Part-Time">Part-Time</option>
+              <option value="Internship">Internship</option>
+              <option value="Freelance">Freelance</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-content half-width">
+            <label>Salary</label>
+            <input
+              type="number"
+              [(ngModel)]="editJobData.salary"
+              name="salary"
+            />
+          </div>
+
+          <div class="form-content">
+            <label>Experience</label>
+            <select
+              [(ngModel)]="editJobData.experience"
+              name="experience"
+              required
+            >
+              <option value="">-- Select Experience Level --</option>
+              <option value="Entry Level">Entry Level (0–1 years)</option>
+              <option value="Mid Level">Mid Level (2–4 years)</option>
+              <option value="Senior Level">Senior Level (5+ years)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-content">
+            <label>Education</label>
+            <input [(ngModel)]="editJobData.education" name="education" />
+          </div>
+
+          <div class="form-content">
+            <label>Skills (comma separated)</label>
+            <input
+              [(ngModel)]="editJobData.skillsString"
+              name="skills"
+              (ngModelChange)="skillsChanged($event)"
+            />
+          </div>
+        </div>
+        <div class="btn">
+          <button type="submit">Save</button>
+          <button type="button" (click)="editModalVisible = false">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

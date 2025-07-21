@@ -37,10 +37,13 @@ const postJob = async(req, res)=> {
         const newJob = new Job(jobData);
         await newJob.save();
        const populatedJob = await newJob.populate('postedBy', '_id companyName imageUrl');
-        res.status(201).json({message: "Job posted successfully",job:newJob});
+        return res.status(201).json({message: "Job posted successfully",job: populatedJob});
     }catch(error){
-        res.status(500).json({error: "Failed to post Job"});
+        console.error("Error in postJob:", error);
+    if (!res.headersSent) {
+      return res.status(500).json({ error: "Failed to post Job", details: error.message || error });
     }
+  }
 };
 const getJob = async (req, res) => {
   try {
@@ -99,4 +102,84 @@ const getJob = async (req, res) => {
   }
 };
 
-module.exports = {postJob,getJob};
+// getalljob
+const getalljobs = async (req, res) => {
+  try {
+    const jobs = await Job.find({
+      status: { $in: ['posted', 'pending'] }
+    }).populate('postedBy', '_id companyName imageUrl');
+
+    res.json(jobs);
+  } catch (error) {
+    console.error('Error in getAllJobs:', error);
+    res.status(500).json({ error: 'Failed to get jobs' });
+  }
+};
+// update the job
+const updateJob = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { jobId, ...updateData } = req.body;
+
+    if (!jobId) {
+      return res.status(400).json({ message: "Job Id is required" });
+    }
+
+    const job = await Job.findOne({ jobId, postedBy: userId });
+    if (!job) {
+      return res.status(404).json({ message: "Job not found or not authorized" });
+    }
+
+    const allowedUpdates = [
+      "title",
+      "description",
+      "category",
+      "type",
+      "salary",
+      "experience",
+      "education",
+      "skills",
+      "language",
+      "softSkills",
+      "status"
+    ];
+
+    allowedUpdates.forEach((field) => {
+      if (field in updateData) {
+        job[field] = updateData[field];
+      }
+    });
+
+    await job.save();
+
+    res.json({ message: "Job updated successfully", job });
+  } catch (error) {
+    console.error("Error in updateJob:", error);
+    res.status(500).json({ error: "Failed to update job" });
+  }
+};
+
+
+
+// delete the job
+const deleteJob = async(req,res) => {
+  try{
+    const userId = req.user._id;
+    const {jobId} = req.body;
+
+    if(!jobId){
+      return res.status(400).json({message: 'Job Id is required'});
+    }
+    const job = await Job.findOne({jobId: jobId, postedBy: userId});
+    if(!job){
+      return res.status(404).json({message:'Job not found'});
+    }
+    await Job.deleteOne({_id: job._id});
+    return res.json({message: `Job Deleted successfully.`});
+  }catch(err){
+    console.error('Error Deleting job:', err);
+    res.status(500).json({message:'Internal server error'});
+  }
+};
+
+module.exports = {postJob,getJob,deleteJob,updateJob,getalljobs};

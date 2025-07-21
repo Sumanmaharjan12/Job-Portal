@@ -1,0 +1,37 @@
+<app-header></app-header>
+
+<div class="apply">
+  <div class="head">
+    <h1>Browse Opportunities</h1>
+  </div>
+  <div class="jobs">
+    <div class="card" *ngFor="let job of jobs">
+      <div class="logo">
+        <img [src]="getProfileImage(job)" />
+        <i class="fa-regular fa-heart"></i>
+      </div>
+
+      <div class="info">
+        <div class="company">
+          <span>{{ job.postedBy.companyName || "Company Name" }}</span>
+          <p>{{ getDaysAgo(job.createdAt) }}</p>
+        </div>
+
+        <h2>{{ job.title }}</h2>
+
+        <div class="types">
+          <span>{{ job.category }}</span>
+          <span>{{ job.type }}</span>
+        </div>
+      </div>
+
+      <div class="description">
+        <span class="description-clamp">{{ job.description }}</span>
+      </div>
+
+      <div class="btn">
+        <button>Apply Now</button>
+      </div>
+    </div>
+  </div>
+</div>

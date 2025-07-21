@@ -35,6 +35,7 @@ export class PostajobComponent {
     this.showToast('Please fill out all required fields.','error');
     return;
   }
+ 
 
   const jobData = {...this.jobForm.value};
 
@@ -65,6 +66,9 @@ export class PostajobComponent {
       this.showToast('Failed to post job. Please try again.','error');
     }
   });
+}
+ onCancel() {
+  this.jobForm.reset();
 }
 
 showToast(message: string, type: 'success' | 'error'){
