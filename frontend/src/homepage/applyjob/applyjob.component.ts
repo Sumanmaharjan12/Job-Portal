@@ -13,11 +13,13 @@ export class ApplyjobComponent implements OnInit{
     category: string;
     type: string;
     createdAt: string;
+    skills: string[];
     postedBy: {
       companyName: string;
       imageUrl?: string;
     };
   }[] = [];
+  selectedJob: any = null;
   toastMessage= '';
   toastClass = '';
 
@@ -38,7 +40,23 @@ export class ApplyjobComponent implements OnInit{
       }
     });
   }
-  
+
+  getFirst50Words(text: string): string {
+  if (!text) return '';
+  const words = text.split(/\s+/); // split by any whitespace
+  if (words.length <= 60) {
+    return text;
+  }
+  return words.slice(0, 60).join(' ') + '...';
+}
+
+  openJobDetails(job: any): void{
+    this.selectedJob = job;
+  }
+
+  closeJobDetail(): void{
+    this.selectedJob = null;
+  }
  
 getProfileImage(job: any): string {
   if (!job.postedBy?.imageUrl) {
@@ -70,6 +88,26 @@ getDaysAgo(dateString: string): string {
     return `${diffDays} days ago`;
   }
 }
+
+// applied job
+applyJob(jobId: string) {
+  const token = sessionStorage.getItem('token') || '';
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  this.http.post<{ message: string }>('/api/applications/applyjob', { jobId }, { headers }).subscribe({
+    next: (res) => {
+      this.showToast(res.message || 'Application submitted successfully', 'success');
+      this.closeJobDetail();
+    },
+    error: (err) => {
+      console.error('Failed to apply for job', err);
+      const errorMsg = err.error?.message || 'Failed to send application';
+      this.showToast(errorMsg, 'error');  // Show backend message here
+    }
+  });
+}
+
   showToast(message: string, type: 'success' | 'error') {
     this.toastMessage = message;
     this.toastClass = type === 'success' ? 'toast-success' : 'toast-error';

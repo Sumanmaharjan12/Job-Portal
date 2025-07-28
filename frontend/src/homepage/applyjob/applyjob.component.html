@@ -1,5 +1,7 @@
 <app-header></app-header>
-
+<div *ngIf="toastMessage" [ngClass]="toastClass" class="toast">
+  {{ toastMessage }}
+</div>
 <div class="apply">
   <div class="head">
     <h1>Browse Opportunities</h1>
@@ -30,8 +32,29 @@
       </div>
 
       <div class="btn">
-        <button>Apply Now</button>
+        <button (click)="openJobDetails(job)">Apply Now</button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- overlay card -->
+ <div class="overlay" *ngIf="selectedJob">
+  <div class="modal">
+    <div class="close" (click)="closeJobDetail()">
+      <i class="fa-solid fa-xmark"></i>
+    </div>
+      <h2>{{ selectedJob.title }}</h2>
+    <p><strong>Company:</strong> {{ selectedJob.postedBy.companyName }}</p>
+    <p><strong>Posted:</strong> {{ getDaysAgo(selectedJob.createdAt) }}</p>
+    <p><strong>Category:</strong> {{ selectedJob.category }}</p>
+    <p><strong>Type:</strong> {{ selectedJob.type }}</p>
+    <p><strong>Description:</strong></p>
+    <p>{{ getFirst50Words(selectedJob.description)  }}</p>
+    <p><strong>Skills Required:</strong></p>
+    <ul>
+      <li *ngFor="let skill of selectedJob.skills">{{ skill }}</li>
+    </ul>
+    <button class="apply-btn" (click)="applyJob(selectedJob._id)">Proceed to Apply</button>
+  </div>
+ </div>

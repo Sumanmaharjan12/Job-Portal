@@ -70,8 +70,10 @@ export class LoginComponent implements OnInit {
           this.togglePanel();
           this.resetForm(form); 
         },
-        error: (err) => {this.setMessage('Email is already registered','warning');
-          this.resetForm(form)
+        error: (err) => {
+          const backendMsg = err.error?.message || 'Signup failed';
+          this.setMessage(backendMsg, 'warning');
+          this.resetForm(form);
         }
       });
     }else{
@@ -86,8 +88,13 @@ export class LoginComponent implements OnInit {
           });  // save role here
          console.log('Role saved:', sessionStorage.getItem('role'));
         console.log('User data saved:', sessionStorage.getItem('user'));
+
+        if(res.user.role ==='Admin' || res.user.role === 'SuperAdmin'){
+          this.router.navigate(['/admin/dashboard']);
+        }else{
            this.router.navigate(['/profile']);
-        },
+        }
+       },
         error : (err) => this.setMessage('Please check your email or password',err)
       });
     }
