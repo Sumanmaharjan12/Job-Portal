@@ -5,9 +5,22 @@ const jwt= require('jsonwebtoken');
 const {MESSAGES, TOKENS } = require('../constants');
 
 // post Signup
-exports.signup = async (req, res) =>{
+const signup = async (req, res) =>{
     try{
         const{name,email,password,role}=req.body;
+            if (!name || name.length < 8) {
+      return res.status(400).json({ message: 'Name must be at least 8 characters long.' });
+    }
+
+    const emailRegex = /^[a-zA-Z0-9]+@gmail\.com$/;
+    if (!email || !emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid email format.' });
+    }
+
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
+    }
+
         const existingUser = await User.findOne({email});
         if(existingUser){
             return res.status(400).json({message:'Email already registered'});
@@ -16,7 +29,7 @@ exports.signup = async (req, res) =>{
         const newUser= await User.create({
             name,
             email,
-            password,
+            password:hashedPassword,
             role
         });
         res.status(201).json({message: 'User registered successfully', newUser});
@@ -26,7 +39,7 @@ exports.signup = async (req, res) =>{
         }
     };
 // Post Login
-exports.login =async(req,res)=>{
+const login =async(req,res)=>{
     try{
         const {email,password}=req.body;
         const user =await User.findOne({email});
@@ -61,3 +74,4 @@ exports.login =async(req,res)=>{
         res.status(500).json({message:'Server error'});
     }
 };
+module.exports={signup,login};

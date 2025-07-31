@@ -1,0 +1,77 @@
+.content{
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    padding: 60px 60px;
+    gap: 40px;
+}
+.content h1{
+    font-size: var(--Heading-size);
+    color: var(--Heading-color);
+}
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.hire-table img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  display: block;
+}
+.content th,
+.content td {
+  border: 1px solid var(--Black-color);
+  padding: 8px;
+  text-align: center;
+  font-size: var(--body-size);
+}
+select {
+  padding: 5px 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+select:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 5px rgba(26, 115, 232, 0.5);
+}
+td a{
+    text-decoration: none;
+    color: var(--Primary-color);
+    cursor: pointer;
+}
+td a:hover{
+    color:var(--Secondary-color)
+}
+
+.toast {
+  position: fixed;
+   bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  z-index: 9999;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.toast-success {
+  background-color: #38a169; /* green */
+}
+
+.toast-error {
+  background-color: #e53e3e; /* red */
+}

@@ -10,11 +10,15 @@ import { AuthService } from 'src/app/services/auth.service';
 
 export class HomeComponent {
 userRole: string | null = null;
-private roleSubscription!: Subscription;
+  private roleSubscription!: Subscription;
 
-constructor(public authService: AuthService) {
-   this.roleSubscription = this.authService.userRole$.subscribe(role => {
+  constructor(public authService: AuthService) {
+    this.roleSubscription = this.authService.userRole$.subscribe((role) => {
       this.userRole = role;
-  });
-}
+    });
+  }
+
+  ngOnDestroy() {
+    this.roleSubscription.unsubscribe();
+  }
 }

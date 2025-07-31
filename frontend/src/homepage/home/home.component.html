@@ -1,5 +1,5 @@
 <app-header></app-header>
-<app-landing ></app-landing>
+<app-landing  ></app-landing>
 <app-filler *ngIf="!(authService.isLoggedIn$ | async)"></app-filler>
 <app-category *ngIf="userRole === 'JobSeeker'"></app-category>
 <!-- <app-postajob *ngIf="userRole === 'JobKeeper'"></app-postajob> -->

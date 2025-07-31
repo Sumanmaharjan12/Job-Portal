@@ -46,13 +46,13 @@
     </div>
       <h2>{{ selectedJob.title }}</h2>
     <p><strong>Company:</strong> {{ selectedJob.postedBy.companyName }}</p>
-    <p><strong>Posted:</strong> {{ getDaysAgo(selectedJob.createdAt) }}</p>
+    <p><strong>Salary:</strong> {{ selectedJob.salary }}</p>
     <p><strong>Category:</strong> {{ selectedJob.category }}</p>
     <p><strong>Type:</strong> {{ selectedJob.type }}</p>
     <p><strong>Description:</strong></p>
     <p>{{ getFirst50Words(selectedJob.description)  }}</p>
     <p><strong>Skills Required:</strong></p>
-    <ul>
+    <ul class="skills-list">
       <li *ngFor="let skill of selectedJob.skills">{{ skill }}</li>
     </ul>
     <button class="apply-btn" (click)="applyJob(selectedJob._id)">Proceed to Apply</button>

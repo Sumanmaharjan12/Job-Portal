@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit{
+  
   profileImageUrl: string = '';
 
   constructor(private router: Router, public authService: AuthService, private http:HttpClient) {}

@@ -23,7 +23,7 @@ export class AuthService {
   // Login and role
   private isLoggedIn = !!sessionStorage.getItem('isLoggedIn');
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn);
-  private userRoleSubject = new BehaviorSubject<string | null>(localStorage.getItem('role'));
+  private userRoleSubject = new BehaviorSubject<string | null>(sessionStorage.getItem('role'));
 
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
   userRole$ = this.userRoleSubject.asObservable();

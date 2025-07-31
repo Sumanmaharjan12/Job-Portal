@@ -4,15 +4,13 @@
   </div>
   <div class="nav">
     <a
+    *ngIf="isJobSeeker() || isJobKeeper()"
       routerLink="/home"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
       >Home</a
     >
 
-    <!-- Show both if not logged in -->
-    <nav *ngIf="isPublic()">Explore</nav>
-    <nav *ngIf="isPublic()">Hire</nav>
 
     <!-- Show only if JobSeeker -->
     <a
@@ -32,7 +30,13 @@
     >
       Post A Job
     </a>
-    <nav *ngIf="isJobKeeper()">Hire</nav>
+    <a
+      *ngIf="isJobKeeper()"
+      routerLink="/hire"
+      routerLinkActive="active"
+    >
+      Hire
+    </a>
     <nav *ngIf="isJobSeeker()">Job Detail</nav>
     <a
       *ngIf="isJobKeeper()"

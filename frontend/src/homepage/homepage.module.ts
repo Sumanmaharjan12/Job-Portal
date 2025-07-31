@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ProfiledetailComponent } from './profiledetail/profiledetail.component';
 import { PostedjobComponent } from './postedjob/postedjob.component';
 import { ApplyjobComponent } from './applyjob/applyjob.component';
+import { HireComponent } from './hire/hire.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ApplyjobComponent } from './applyjob/applyjob.component';
     ProfileComponent,
     ProfiledetailComponent,
     PostedjobComponent,
-    ApplyjobComponent
+    ApplyjobComponent,
+    HireComponent
   ],
   imports: [
     CommonModule,

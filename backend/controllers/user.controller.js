@@ -4,10 +4,10 @@ const User = require('../models/user.model');
 const {MESSAGES} = require('../constants');
 
 // GET
-exports.getProfile= async(req , res)=> {
+const getProfile= async(req , res)=> {
     try{
         const userId= req.user.userId;
-        const user = await user.findById(userID).select('-password');
+        const user = await User.findById(userId).select('-password');
 
         if(!user){
             return res.status(404).json({message: 'MESSAGES.USER_NOT_FOUND'});
@@ -19,3 +19,4 @@ exports.getProfile= async(req , res)=> {
         res.status(500).json({message:'Server Error'});
     }
 };
+module.exports={getProfile};

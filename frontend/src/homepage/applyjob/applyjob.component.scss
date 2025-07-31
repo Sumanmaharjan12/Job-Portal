@@ -199,3 +199,16 @@ ul {
     font-size: var(--body-size);
     cursor: pointer;
 }
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  padding: 0px 20px;
+  margin: 0;
+}
+
+.skills-list li {
+  flex: 1 0 30%; /* roughly 3 per row */
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
