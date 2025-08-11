@@ -10,6 +10,7 @@ import { ProfiledetailComponent } from './profiledetail/profiledetail.component'
 import { PostedjobComponent } from './postedjob/postedjob.component';
 import { ApplyjobComponent } from './applyjob/applyjob.component';
 import { HireComponent } from './hire/hire.component';
+import { JobdetailComponent } from './jobdetail/jobdetail.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { HireComponent } from './hire/hire.component';
     ProfiledetailComponent,
     PostedjobComponent,
     ApplyjobComponent,
-    HireComponent
+    HireComponent,
+    JobdetailComponent
   ],
   imports: [
     CommonModule,

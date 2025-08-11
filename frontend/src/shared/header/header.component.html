@@ -37,7 +37,13 @@
     >
       Hire
     </a>
-    <nav *ngIf="isJobSeeker()">Job Detail</nav>
+     <a
+      *ngIf="isJobSeeker()"
+      routerLink="/jobdetail"
+      routerLinkActive="active"
+    >
+      Job Detail
+    </a>
     <a
       *ngIf="isJobKeeper()"
       routerLink="/job-posted"

@@ -1,0 +1,54 @@
+<div class="admin-jobseekers">
+  <!-- Toast Message -->
+  <div *ngIf="message" class="toast" [ngClass]="messageType">
+    {{ message }}
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="loading">
+    Loading job Keepers...
+  </div>
+
+  <!-- Table -->
+  <table *ngIf="!loading && jobKeepers.length > 0" class="content">
+    <thead>
+      <tr>
+        <th>Profile</th>
+        <th>Company Name</th>
+        <th>Email</th>
+        <th>Number</th>
+        <th>Company Website</th>
+        <th>Job Openings</th>
+        <th>Risk Level</th>
+        <th>Issues</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let seeker of jobKeepers; let i = index">
+         <td>
+          <img [src]="'http://localhost:5000/' + seeker.imageUrl" alt="profile" />
+        </td>
+        <td>{{ seeker.companyName }}</td>
+        <td>{{ seeker.userId.email }}</td>
+         <td>{{ seeker.phone }}</td>
+         <td>{{seeker.companyWebsite}}</td>
+         <td>{{ seeker.jobOpenings}}</td>
+         <td>{{ seeker.riskLevel}}</td>
+         <td>{{ seeker.issues}}</td>
+         
+        
+        <td>
+          <button class="btn-delete" (click)="deleteJobSeeker(seeker._id)">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Data -->
+  <div *ngIf="!loading && jobKeepers.length === 0" class="no-data">
+    No job seekers found.
+  </div>
+</div>

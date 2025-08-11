@@ -1,0 +1,212 @@
+<div *ngIf="toastMessage" [ngClass]="toastClass" class="toast-message">
+  {{ toastMessage }}
+</div>
+<div *ngIf="loading">
+  <p>Loading dashboard statistics...</p>
+</div>
+
+<div *ngIf="!loading">
+  <h2>Admin Dashboard</h2>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total Users</h3>
+      <p>{{ totalUsers }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Total Jobs</h3>
+      <p>{{ totalJobs }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Total Applications</h3>
+      <p>{{ totalApplications }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Pending Jobs</h3>
+      <p>{{ pendingJobs }}</p>
+    </div>
+  </div>
+  <div class="content">
+    
+    <div class="details">
+      <div class="recent-tabs">
+        <button
+          (click)="selectTab('jobs')"
+          [class.active]="selectedTab === 'jobs'"
+        >
+          Recent Jobs Posted
+        </button>
+        <button
+          (click)="selectTab('registered')"
+          [class.active]="selectedTab === 'registered'"
+        >
+          Recently Registered Users
+        </button>
+        <button
+          (click)="selectTab('applied')"
+          [class.active]="selectedTab === 'applied'"
+        >
+          Recently Job Applied Users
+        </button>
+      </div>
+
+      <div class="recent-section">
+        <h3>
+          {{
+            selectedTab === "jobs"
+              ? "Recent Jobs Posted"
+              : selectedTab === "registered"
+              ? "Recently Registered Users"
+              : "Recently Job Applied Users"
+          }}
+        </h3>
+
+        <!-- Jobs Table -->
+        <div class="table-container" *ngIf="selectedTab === 'jobs'">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Job Title</th>
+                <th>Company</th>
+                <th>Posted</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let job of recentJobs">
+                <td>{{ job.title }}</td>
+                <td>{{ job.postedBy.companyName }}</td>
+                <td>{{ getDaysAgo(job.createdAt) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-container" *ngIf="selectedTab === 'registered'">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of recentUsers">
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <div class="table-container" *ngIf="selectedTab === 'applied'">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User Email</th>
+                <th>Job Title</th>
+                <th>Company Name</th>
+                <th>Applied On</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let app of recentApplications">
+                <td>{{ app.email }}</td>
+                <td>{{ app.jobTitle }}</td>
+                <td>{{ app.companyName }}</td>
+                <td>{{ getDaysAgo(app.appliedOn) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- add admin -->
+    <div class="admindetails">
+      <div class="addadmin">
+        <h3>Add New Admin</h3>
+        <button
+          (click)="openAddAdminModal()"
+          class="addbtn"
+          aria-label="Add new admin"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <!-- Add Admin Modal/Overlay -->
+      <div class="modal-overlay" *ngIf="showAddAdminModal">
+        <div class="modal-content">
+          <h3>Add New Admin</h3>
+          <form (ngSubmit)="addAdmin()">
+            <div style="margin-bottom: 1rem">
+              <label>
+                Name:
+                <input
+                  type="text"
+                  [(ngModel)]="newAdmin.name"
+                  name="name"
+                  required
+                />
+              </label>
+            </div>
+
+            <div style="margin-bottom: 1rem">
+              <label>
+                Email:
+                <input
+                  type="email"
+                  [(ngModel)]="newAdmin.email"
+                  name="email"
+                  required
+                />
+              </label>
+            </div>
+
+            <div style="margin-bottom: 1rem">
+              <label>
+                Password:
+                <input
+                  type="password"
+                  [(ngModel)]="newAdmin.password"
+                  name="password"
+                  required
+                />
+              </label>
+            </div>
+
+            <button type="submit" class="success">Add Admin</button>
+            <button
+              type="button"
+              (click)="closeAddAdminModal()"
+              class="secondary"
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Admin List Table -->
+      <div class="admin-list">
+        <h3>Admins List</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <!-- you can add more columns if needed -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let admin of admins">
+              <td>{{ admin.name }}</td>
+              <td>{{ admin.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

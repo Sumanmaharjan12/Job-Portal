@@ -29,7 +29,7 @@ import { PostajobComponent } from './postajob/postajob.component';
      FillerComponent,
      CategoryComponent,
      PostajobComponent,
-     RouterModule
+    //  RouterModule
   ]
 })
 export class SharedModule { }

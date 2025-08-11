@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
 
     const payload ={
       name : this.isSignup ? this.formData.name: undefined,
-      email : this.formData.email,
+      email : this.formData.email.toLowerCase(),
       password : this.formData.password,
       role: this.isSignup? this.role : undefined
     };
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
         console.log('User data saved:', sessionStorage.getItem('user'));
 
         if(res.user.role ==='Admin' || res.user.role === 'SuperAdmin'){
-          this.router.navigate(['/admin/dashboard']);
+          this.router.navigate(['/dashboard/admindashboard']);
         }else{
            this.router.navigate(['/profile']);
         }

@@ -1,15 +1,28 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { NgModule } from '@angular/core';
 
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { AdminRoutingModule } from './admin-routing.module';
+import { AdmindashboardComponent } from './admindashboard/admindashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminjobseekerComponent } from './adminjobseeker/adminjobseeker.component';
+import { AdminjobkeeperComponent } from './adminjobkeeper/adminjobkeeper.component';
 
 
 @NgModule({
   declarations: [
-    AdminDashboardComponent
+    DashboardComponent,
+    AdmindashboardComponent,
+    AdminjobseekerComponent,
+    AdminjobkeeperComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    AdminRoutingModule,
+    HttpClientModule,
+    FormsModule
+    
   ]
 })
 export class AdminModule { }

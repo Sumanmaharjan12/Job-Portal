@@ -1,0 +1,66 @@
+<app-header></app-header>
+
+<div *ngIf="toastMessage" [ngClass]="toastClass" class="toast">
+  {{ toastMessage }}
+</div>
+
+<div class="content">
+  <h1>Your Applied Job Details</h1>
+  <table class="hire-table">
+    <thead>
+      <tr>
+        <th>Company Profile</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Company Name</th>
+        <th>Company Address</th>
+        <th>Job Title</th>
+        <th>Skills Required</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let app of applications">
+        <td class="center-cell">
+          <img
+            [src]="'http://localhost:5000/' + app.companyProfileImage"
+            alt="company profile"
+            class="center-img"
+          />
+        </td>
+        <td>{{ app.name }}</td>
+        <td>{{ app.email }}</td>
+        <td>{{ app.companyName }}</td>
+        <td>{{ app.companyAddress }}</td>
+        <td>{{ app.jobTitle }}</td>
+        <td>
+          <ng-container *ngFor="let skill of app.jobSkills; let i = index">
+            {{ skill }}<span *ngIf="(i + 1) % 2 === 0"><br /></span>
+            <span *ngIf="(i + 1) % 2 !== 0 && i + 1 !== app.jobSkills.length"
+              >,
+            </span>
+          </ng-container>
+        </td>
+
+        <td
+          [ngClass]="{
+            'pending-color': app.status === 'pending',
+            'rejected-color': app.status === 'rejected',
+            'approved-color': app.status === 'accepted'
+          }"
+        >
+          {{ app.status | titlecase }}
+        </td>
+        <td>
+          <div class="button">
+            <i
+              class="fa-solid fa-trash"
+              (click)="deleteApplication(app._id)"
+            ></i>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

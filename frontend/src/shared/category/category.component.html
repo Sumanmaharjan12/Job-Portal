@@ -1,67 +1,11 @@
 <div class="category">
   <h1>Popular Category</h1>
   <div class="container">
-    <div class="content">
-      <i class="fa-solid fa-paint-brush"></i>
+    <div class="content" *ngFor="let category of categories">
+       <i class="fa-solid" [ngClass]="getIconClass(category._id)"></i>
       <div class="detail">
-        <h2>Graphic & Design</h2>
-        <p>2 Postion</p>
-      </div>
-    </div>
-    <!--code & programming  -->
-    <div class="content">
-      <i class="fa-solid fa-laptop-code"></i>
-      <div class="detail">
-        <h2>Code & Programming</h2>
-        <p>12 Postion</p>
-      </div>
-    </div>
-    <!-- digital marketing -->
-    <div class="content">
-      <i class="fa-solid fa-bullhorn"></i>
-      <div class="detail">
-        <h2>Digital Marketing</h2>
-        <p>20 Postion</p>
-      </div>
-    </div>
-    <!-- writing and translation -->
-    <div class="content">
-      <i class="fa-solid fa-pen-nib"></i>
-      <div class="detail">
-        <h2>Writing and Translation</h2>
-        <p>10 Postion</p>
-      </div>
-    </div>
-    <!-- Video Animation -->
-    <div class="content">
-      <i class="fa-solid fa-clapperboard"></i>
-      <div class="detail">
-        <h2>Video Animation</h2>
-        <p>10 Postion</p>
-      </div>
-    </div>
-    <!-- music -->
-    <div class="content">
-      <i class="fa-solid fa-headphones"></i>
-      <div class="detail">
-        <h2>Music & Audio</h2>
-        <p>10 Postion</p>
-      </div>
-    </div>
-    <!-- Business & Consulting -->
-      <div class="content">
-      <i class="fa-solid fa-briefcase"></i>
-      <div class="detail">
-        <h2>Business & Consulting</h2>
-        <p>18 Postion</p>
-      </div>
-    </div>
-    <!-- data entry -->
-     <div class="content">
-      <i class="fa-solid fa-briefcase"></i>
-      <div class="detail">
-        <h2>Data Entry & Admin</h2>
-        <p>2 Postion</p>
+        <h2>{{ category._id }}</h2>
+        <p>{{ category.count }} Position</p>
       </div>
     </div>
   </div>

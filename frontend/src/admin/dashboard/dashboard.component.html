@@ -1,0 +1,90 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <h2>JobNepal Admin</h2>
+    <ul>
+      <li
+        class="admin-panel"
+        routerLink="/dashboard/admindashboard"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="fas fa-th"></i>
+        <span>Dashboard</span>
+      </li>
+      <li>
+        <div class="admin-panel" (click)="toggleDropdown()">
+          <div class="left-part">
+            <i class="fa-solid fa-user"></i>
+            <span>User</span>
+          </div>
+          <i
+            class="fa-solid fa-angle-down dropdown-icon"
+            [class.rotate-up]="dropdownOpen"
+          ></i>
+        </div>
+
+        <div
+          class="dropdown-menu"
+          *ngIf="dropdownOpen"
+          (click)="$event.stopPropagation()"
+        >
+          <ul>
+            <li
+              class="admin-panel"
+              routerLink="/dashboard/adminjobseeker"
+              routerLinkActive="active-link"
+            >
+              <i class="fas fa-briefcase"></i>
+              <span>JobSeeker</span>
+            </li>
+            <li
+              class="admin-panel"
+              routerLink="/dashboard/adminjobkeeper"
+              routerLinkActive="active-link"
+            >
+              <i class="fas fa-user-tie"></i>
+              <span>JobKeeper</span>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="admin-panel">
+        <i class="fas fa-tasks"></i>
+        <span>Jobs</span>
+      </li>
+      <li class="admin-panel">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Job Categories</span>
+      </li>
+      <li class="admin-panel">
+        <i class="fas fa-clipboard-check"></i>
+        <span>Application</span>
+      </li>
+
+      <li class="admin-panel">
+        <i class="fas fa-cogs"></i>
+        <span>Settings</span>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <i class="fa-solid fa-user-tie"></i>
+        <div class="user-info">
+          <span class="user-role">{{ role }}</span>
+        </div>
+      </div>
+
+      <button class="logout-btn" (click)="logout()">
+        <span>Logout</span>
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </header>
+
+    <section class="page-content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>
