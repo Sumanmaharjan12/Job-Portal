@@ -6,7 +6,6 @@ const UserProfile = require('../models/user-profile');
 const applyJob = async(req,res) =>{
     try{
         const userId =  req.user._id;
-        console.log('Extracted userId:', userId);
         const {jobId} = req.body;
 
            if (!jobId) return res.status(400).json({ message: 'JobId is required' });
@@ -62,16 +61,57 @@ const applyJob = async(req,res) =>{
 };
 
 // to get
-const getApplications = async(req, res) => {
-  try{
-    const jobkeeperId = req.user._id;
-    const application = await Application.find({jobkeeper: jobkeeperId});
-    res.status(200).json(application);
-  }catch(error){
-    console.error('getApplication error: ', error);
-    res.status(500).json({message: 'server error'})
+const getApplications = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const userRole = req.user.role ? req.user.role.toLowerCase().trim() : '';
+
+    let applications;
+
+    if (userRole === 'jobkeeper') {
+      applications = await Application.find({ jobkeeper: userId });
+    } else if (userRole === 'jobseeker') {
+      applications = await Application.find({ user: userId }).populate({
+        path: 'job',
+        select: 'title skills postedBy',
+        populate: {
+          path: 'postedBy',
+          select: 'companyName companyAddress imageUrl'
+        }
+      });
+    } else {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    const formatted = applications.map(app => {
+      if (userRole === 'jobseeker') {
+        return {
+          _id: app._id,
+          name: app.name,
+          email: app.email,
+          phone: app.phone,
+          location: app.location,
+          status: app.status,
+
+          jobTitle: app.job?.title || '',
+          jobSkills: app.job?.skills || [],
+          companyName: app.job?.postedBy?.companyName || '',
+          companyAddress: app.job?.postedBy?.companyAddress || '',
+          companyProfileImage: app.job?.postedBy?.imageUrl || '',
+        };
+      } else {
+        return app;
+      }
+    });
+
+    res.status(200).json(formatted);
+
+  } catch (err) {
+    console.error('getApplications error:', err);
+    res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 // updates
 const updateApplications = async(req,res) => {
@@ -98,4 +138,25 @@ const updateApplications = async(req,res) => {
       res.status(500).json({message: 'Server error'});
     }
   };
-module.exports ={applyJob,getApplications,updateApplications};
+
+  // deleteapplication
+  const deleteApplications = async (req, res) => {
+    try{
+      const userId= req.user._id;
+      const {applicationId} = req.params;
+       const application = await Application.findOne({ _id: applicationId, user: userId });
+
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found or unauthorized' });
+    }
+
+    await Application.deleteOne({ _id: applicationId });
+
+    res.status(200).json({ message: 'Application deleted successfully' });
+  } catch (error) {
+    console.error('deleteApplication error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports ={applyJob,getApplications,updateApplications,deleteApplications};

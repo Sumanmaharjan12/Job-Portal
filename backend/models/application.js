@@ -18,7 +18,6 @@ const ApplicationSchema = new mongoose.Schema({
   location: String,
 
   phone: String,
-  location: String,
   gender: String,
   dob: Date,
   qualification: String,

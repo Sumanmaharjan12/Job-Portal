@@ -18,7 +18,8 @@ const authenticate = (req, res, next) => {
 
     // Attach decoded payload to the request object
       req.user = {
-       _id: decoded.userId
+       _id: decoded.userId,
+        role: decoded.role,
     };
 
     // Proceed to the next middleware or route handler

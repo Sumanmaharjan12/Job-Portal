@@ -8,6 +8,7 @@ const {MESSAGES, TOKENS } = require('../constants');
 const signup = async (req, res) =>{
     try{
         const{name,email,password,role}=req.body;
+         const emailLower = email.toLowerCase(); 
             if (!name || name.length < 8) {
       return res.status(400).json({ message: 'Name must be at least 8 characters long.' });
     }
@@ -25,11 +26,11 @@ const signup = async (req, res) =>{
         if(existingUser){
             return res.status(400).json({message:'Email already registered'});
         }
-        const hashedPassword = await bcrypt.hash(password,10);
+        
         const newUser= await User.create({
             name,
-            email,
-            password:hashedPassword,
+            email:emailLower,
+            password,
             role
         });
         res.status(201).json({message: 'User registered successfully', newUser});
@@ -42,10 +43,13 @@ const signup = async (req, res) =>{
 const login =async(req,res)=>{
     try{
         const {email,password}=req.body;
-        const user =await User.findOne({email});
+    
+
+        const user =await User.findOne({ email: email.toLowerCase()});
         if(!user){
             return res.status(401).json({message: MESSAGES.USER_NOT_FOUND});
         }
+        
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch){
             return res.status(401).json({message:MESSAGES.INVALID_CREDENTIALS});

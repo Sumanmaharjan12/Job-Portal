@@ -7,7 +7,7 @@ async function createSuperAdmin(){
             role:'SuperAdmin'
         });
         if(exists){
-            console.log('SuperAdmin already exits');
+            
             return;
         }
         const newAdmin = new User({
@@ -18,7 +18,7 @@ async function createSuperAdmin(){
         });
 
         await newAdmin.save();
-        console.log('SuperAdmin created');
+        
     }catch(err){
         console.error('Error seeding SuperAdmin',err);
     }

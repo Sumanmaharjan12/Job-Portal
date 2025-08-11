@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Job = require("../models/job");
 const User = require("../models/user-profile")
+const Application = require('../models/application')
 
 const postJob = async(req, res)=> {
     try{
@@ -174,6 +175,7 @@ const deleteJob = async(req,res) => {
     if(!job){
       return res.status(404).json({message:'Job not found'});
     }
+     await Application.deleteMany({ job: job._id });
     await Job.deleteOne({_id: job._id});
     return res.json({message: `Job Deleted successfully.`});
   }catch(err){
@@ -182,4 +184,23 @@ const deleteJob = async(req,res) => {
   }
 };
 
-module.exports = {postJob,getJob,deleteJob,updateJob,getalljobs};
+// get categories
+const getCategories = async(req,res) =>{
+  try{
+    const categories = await Job.aggregate([
+      {
+        $group:{
+          _id: "$category",
+          count:{$sum:1}
+        }
+      }
+    ]);
+    
+    res.status(200).json(categories);
+  }catch(err){
+    console.error("error in getJobCategories",err);
+    res.status(500).json({error:"Server error"})
+  }
+};
+
+module.exports = {postJob,getJob,deleteJob,updateJob,getalljobs,getCategories};
