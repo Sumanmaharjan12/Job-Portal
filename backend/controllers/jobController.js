@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const Job = require("../models/job");
-const User = require("../models/user-profile")
-const Application = require('../models/application')
+const User = require("../models/user-profile");
+const Application = require('../models/application');
+const Category = require("../models/jobcategory");
 
 const postJob = async(req, res)=> {
     try{
@@ -37,7 +38,10 @@ const postJob = async(req, res)=> {
         }
         const newJob = new Job(jobData);
         await newJob.save();
-       const populatedJob = await newJob.populate('postedBy', '_id companyName imageUrl');
+       const populatedJob =  await newJob.populate([
+      { path: "postedBy", select: "_id companyName imageUrl" },
+      { path: "category", select: "name" },
+    ]);
         return res.status(201).json({message: "Job posted successfully",job: populatedJob});
     }catch(error){
         console.error("Error in postJob:", error);
@@ -52,7 +56,8 @@ const getJob = async (req, res) => {
     const jobs = await Job.find({
       postedBy:userId,
       status: { $in: ['posted', 'pending']
-    }}).populate('postedBy', '_id companyName imageUrl jobOpenings') // populate these fields from the user profile
+    }}).populate('postedBy', '_id companyName imageUrl jobOpenings') 
+    .populate("category", "name")// populate these fields from the user profile
       .exec();
       
       // calculate remaining JobOpenings
@@ -107,8 +112,9 @@ const getJob = async (req, res) => {
 const getalljobs = async (req, res) => {
   try {
     const jobs = await Job.find({
-      status: { $in: ['posted', 'pending'] }
-    }).populate('postedBy', '_id companyName imageUrl');
+      status: { $in: ['posted'] }
+    }).populate('postedBy', '_id companyName imageUrl')
+    .populate('category' , 'name');
 
     res.json(jobs);
   } catch (error) {
@@ -145,11 +151,15 @@ const updateJob = async (req, res) => {
       "status"
     ];
 
-    allowedUpdates.forEach((field) => {
+    allowedUpdates.forEach(field => {
       if (field in updateData) {
-        job[field] = updateData[field];
+        if (field === "category") job.category = updateData.category;
       }
     });
+
+    if (typeof job.skills === 'string') {
+      job.skills = job.skills.split(',').map(s => s.trim()).filter(s => s.length > 0);
+    }
 
     await job.save();
 

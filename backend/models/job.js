@@ -9,7 +9,7 @@ const JobSchema = new mongoose.Schema(
         },
         title: { type: String, required:true},
         description: String,
-        category: String,
+        category:  { type: mongoose.Schema.Types.ObjectId, ref: "JobCategory", required: true },
         type: String,
         salary: Number,
 
