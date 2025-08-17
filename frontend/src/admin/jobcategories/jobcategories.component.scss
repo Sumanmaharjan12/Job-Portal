@@ -1,0 +1,129 @@
+.category-container {
+  max-width: 500px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+
+  .add-category {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    .head {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .admin-category {
+      display: flex;
+      gap: 10px;
+
+      input {
+        flex: 1;
+        padding: 8px 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
+
+      button {
+        padding: 8px 15px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: 0.3s;
+
+        &:hover {
+          background: #45a049;
+        }
+      }
+    }
+  }
+}
+
+
+  .category-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 1400px;
+    padding: 0px 60px;
+    
+  }
+  h3{
+    font-size: var(--Heading-size);
+  }
+  .category-content{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .category-item{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 20%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    padding: 20px 20px;
+    background-color: var(--Background-color);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+  .category-item img{
+    width: 50px;
+    height: 50px;
+  }
+  .category-item span{
+    font-size: var(--small-size);
+  }
+  .pagination {
+  margin-top: 20px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.toast {
+  position: fixed;
+   bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  z-index: 9999;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.success {
+  background-color: #38a169; /* green */
+}
+
+.error {
+  background-color: #e53e3e; /* red */
+}

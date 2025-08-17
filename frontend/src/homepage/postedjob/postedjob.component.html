@@ -33,7 +33,7 @@
                 (job.description.split(" ").length > 10 ? "..." : "")
             }}
           </td> -->
-          <td>{{ job.category }}</td>
+          <td>{{ job.category?.name || '-' }}</td>
           <td>{{ job.type }}</td>
           <td>{{ job.salary || "-" }}</td>
           <td>{{ job.experience }}</td>
@@ -47,7 +47,16 @@
                 : "-"
             }}
           </td>
-          <td>{{ job.status }}</td>
+          <td
+            [ngClass]="{
+              'status-pending': job.status === 'pending',
+              'status-posted': job.status === 'posted',
+              'status-rejected': job.status === 'rejected'
+            }"
+          >
+            {{ job.status | titlecase }}
+          </td>
+
           <td>
             <!-- Add your edit/delete buttons here -->
             <div class="button">
@@ -87,15 +96,9 @@
           <div class="form-content half-width">
             <label>Category</label>
             <select [(ngModel)]="editJobData.category" name="category" required>
-              <option value="">-- Select Category --</option>
-              <option value="Graphic & Design">Graphic & Design</option>
-              <option value="Programming & Tech">Programming & Tech</option>
-              <option value="Digital Marketing">Digital Marketing</option>
-              <option value="Writing & Translation">
-                Writing & Translation
-              </option>
-              <option value="Business & Consulting">
-                Business & Consulting
+              <option [ngValue]="null">-- Select Category --</option>
+              <option *ngFor="let cat of categories" [value]="cat._id">
+                {{ cat.name }}
               </option>
             </select>
           </div>

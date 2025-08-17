@@ -1,0 +1,97 @@
+/* Container */
+
+
+/* Heading */
+.admin-jobs h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: var(--Primary-color);
+}
+
+/* Loading text */
+.loading {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #333;
+}
+
+/* Jobs Table */
+.jobs-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  border-radius: 4px;
+}
+
+.jobs-table th,
+.jobs-table td {
+  border: 1px solid var(--Black-color);
+  padding: 10px;
+  text-align: center;
+  font-size: var(--body-size);
+}
+
+.jobs-table th {
+  background-color: #f4f4f4;
+  font-weight: 600;
+}
+
+.jobs-table td select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: var(--body-size);
+  cursor: pointer;
+  background-color: #fff;
+  transition: 0.2s ease;
+}
+
+.jobs-table td select:hover {
+  border-color: var(--Primary-color);
+}
+
+.jobs-table td select:focus {
+  outline: none;
+  border-color: var(--Primary-color);
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+/* No jobs message */
+.admin-jobs p {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+   bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  z-index: 9999;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.toast-success {
+  background-color: #38a169; /* green */
+}
+
+.toast-error {
+  background-color: #e53e3e; /* red */
+}
+
+/* Toast slide-in animation */
+@keyframes slideIn {
+  0% { transform: translateX(100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}

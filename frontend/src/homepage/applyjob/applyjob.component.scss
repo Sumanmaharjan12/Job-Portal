@@ -175,6 +175,11 @@
     cursor: pointer;
     color: var(--delete-color);
 }
+.job-info-row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 h2{
     font-size: var(--Heading-size);
     color: var(--Heading-color);

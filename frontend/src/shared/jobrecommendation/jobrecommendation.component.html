@@ -1,0 +1,85 @@
+<div class="recommended-jobs">
+  <div class="head">
+    <h2>Jobs Recommended for You</h2>
+  </div>
+
+  <div *ngIf="recommendedJobs.length === 0">No recommendations found.</div>
+
+  <div class="jobs">
+    <div *ngFor="let job of recommendedJobs" class="card">
+      <img
+        [src]="'http://localhost:5000/' + job.postedBy?.imageUrl"
+        alt="profile"
+      />
+
+      <div class="info">
+        <div class="company">
+          <span>{{ job.postedBy.companyName || "Company Name" }}</span>
+          <p>{{ getDaysAgo(job.createdAt) }}</p>
+        </div>
+
+        <h2>{{ job.title }}</h2>
+
+        <div class="types">
+           <span>{{ job.category?.name || '-' }}</span>
+          <span>{{ job.type }}</span>
+        </div>
+      </div>
+
+      <div class="description">
+        <span class="description-clamp">{{ job.description }}</span>
+      </div>
+
+      <div class="btn">
+        <button (click)="openJobDetails(job)">Apply Now</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" *ngIf="selectedJob">
+    <div class="modal">
+      <div class="close" (click)="closeJobDetail()">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <h2>{{ selectedJob.title }}</h2>
+      <div class="job-info-row">
+        <p><strong>Company:</strong> {{ selectedJob.postedBy.companyName }}</p>
+        <p><strong>Salary:</strong> {{ selectedJob.salary }}</p>
+        <p><strong>Experience:</strong> {{ selectedJob.experience }}</p>
+        <p *ngIf="selectedJob._matchedSkills?.length">
+          <strong>Matched Skills:</strong>
+          {{ selectedJob._matchedSkills.join(", ")| uppercase }}
+        </p>
+        
+      </div>
+
+      <p><strong>Description:</strong></p>
+      <p>{{ getFirst50Words(selectedJob.description) }}</p>
+
+      <p><strong>Skills Required:</strong></p>
+      <ul class="skills-list">
+        <li *ngFor="let skill of selectedJob.skills">{{ skill }}</li>
+      </ul>
+
+      <p *ngIf="selectedJob.language?.length"><strong>Languages:</strong></p>
+      <ul class="skills-list" *ngIf="selectedJob.language?.length">
+        <li *ngFor="let lang of selectedJob.language">{{ lang }}</li>
+      </ul>
+
+      <p *ngIf="selectedJob.softSkills?.length">
+        <strong>Soft Skills:</strong>
+      </p>
+      <ul class="skills-list" *ngIf="selectedJob.softSkills?.length">
+        <li *ngFor="let soft of selectedJob.softSkills">{{ soft }}</li>
+      </ul>
+
+      <button class="apply-btn" (click)="applyJob(selectedJob._id)">
+        Proceed to Apply
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="toastMessage" [ngClass]="toastClass" class="toast">
+    {{ toastMessage }}
+  </div>
+</div>

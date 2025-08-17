@@ -48,11 +48,20 @@
           </ul>
         </div>
       </li>
-      <li class="admin-panel">
+      <li
+        class="admin-panel"
+        routerLink="/dashboard/adminjobs"
+        routerLinkActive="active-link"
+      >
         <i class="fas fa-tasks"></i>
         <span>Jobs</span>
       </li>
-      <li class="admin-panel">
+      <li
+        class="admin-panel"
+        routerLink="/dashboard/jobcategory"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <i class="fa-solid fa-layer-group"></i>
         <span>Job Categories</span>
       </li>

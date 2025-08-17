@@ -1,47 +1,26 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-applyjob',
-  templateUrl: './applyjob.component.html',
-  styleUrls: ['./applyjob.component.scss']
+  selector: 'app-jobrecommendation',
+  templateUrl: './jobrecommendation.component.html',
+  styleUrls: ['./jobrecommendation.component.scss']
 })
-export class ApplyjobComponent implements OnInit{
-    jobs: {
-    title: string;
-    description: string;
-    category: { _id: string; name: string } | null;
-    type: string;
-    createdAt: string;
-    skills: string[];
-    postedBy: {
-      companyName: string;
-      imageUrl?: string;
-    };
-  }[] = [];
+export class JobrecommendationComponent {
+ recommendedJobs: any[] = [];
   selectedJob: any = null;
-  toastMessage= '';
+
+
+  toastMessage = '';
   toastClass = '';
 
-  constructor(private http:HttpClient){}
-   ngOnInit(): void {
-    this.loadJob();  // <-- call your API loader here
-  }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  loadJob():void{
-    const token = sessionStorage.getItem('token') || '';
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.get<any[]>('/api/jobs/get-all',{headers}).subscribe({
-      next:(data) =>{
-        this.jobs = data;
-      },
-      error: (err) => {
-        console.error('Failed to load Jobs',err);
-      }
-    });
+  ngOnInit(): void {
+    this.loadRecommendedJobs();
   }
-
-  getFirst50Words(text: string): string {
+     getFirst50Words(text: string): string {
   if (!text) return '';
   const words = text.split(/\s+/); // split by any whitespace
   if (words.length <= 60) {
@@ -57,21 +36,7 @@ export class ApplyjobComponent implements OnInit{
   closeJobDetail(): void{
     this.selectedJob = null;
   }
- 
-getProfileImage(job: any): string {
-  if (!job.postedBy?.imageUrl) {
-    return 'assets/images/default-profile.png';
-  }
-  let filename = job.postedBy.imageUrl;
-
-  // Remove leading 'uploads/' if present
-  if (filename.startsWith('uploads/')) {
-    filename = filename.substring('uploads/'.length);
-  }
-
-  return `http://localhost:5000/${filename}`;
-}
-
+  
 getDaysAgo(dateString: string): string {
   if (!dateString) return '';
 
@@ -89,8 +54,28 @@ getDaysAgo(dateString: string): string {
   }
 }
 
-// applied job
-applyJob(jobId: string) {
+  loadRecommendedJobs(): void {
+    const token = sessionStorage.getItem('token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.get<any>('http://localhost:5000/api/recommendations/:userId', { headers }).subscribe({
+      next: (res) => {
+        console.log('Recommended Jobs:', res);
+        this.recommendedJobs = res.recommendations || [];
+      },
+      error: (err) => {
+        console.error(err);
+        this.showToast('Failed to load recommended jobs', 'error');
+      }
+    });
+  }
+
+  // Optional: View job details
+  viewJob(job: any): void {
+    alert(`Job: ${job.title}\nCompany: ${job.postedBy?.companyName}\nMatched Skills: ${job._matchedSkills.join(', ')}`);
+  }
+
+  applyJob(jobId: string) {
   const token = sessionStorage.getItem('token') || '';
 
   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

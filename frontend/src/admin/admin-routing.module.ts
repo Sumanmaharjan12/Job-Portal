@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdmindashboardComponent } from './admindashboard/admindashboard.component';
 import { AdminjobkeeperComponent } from './adminjobkeeper/adminjobkeeper.component';
+import { AdminjobsComponent } from './adminjobs/adminjobs.component';
 import { AdminjobseekerComponent } from './adminjobseeker/adminjobseeker.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { JobcategoriesComponent } from './jobcategories/jobcategories.component';
 
 const routes: Routes = [
   {
@@ -13,6 +15,8 @@ const routes: Routes = [
       { path: 'admindashboard', component: AdmindashboardComponent },
        { path: 'adminjobseeker', component: AdminjobseekerComponent },
          { path: 'adminjobkeeper', component: AdminjobkeeperComponent },
+           { path: 'adminjobs', component: AdminjobsComponent },
+           { path: 'jobcategory', component: JobcategoriesComponent },
      
     ]
   },

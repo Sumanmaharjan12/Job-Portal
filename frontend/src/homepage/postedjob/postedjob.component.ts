@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 })
 export class PostedjobComponent {
   jobs: any[] = [];
+   categories: any[] = [];
 
   toastMessage= '';
   toastClass= '';
@@ -20,6 +21,7 @@ export class PostedjobComponent {
 
   ngOnInit():void{
     this.loadJob();
+     this.loadCategories();
   }
 
   loadJob():void{
@@ -66,6 +68,7 @@ export class PostedjobComponent {
   this.editJobData.skillsString = Array.isArray(this.editJobData.skills)
   ? this.editJobData.skills.join(', ')
   : this.editJobData.skills || '';
+  this.editJobData.category = job.category?._id || job.category || null;
   }
 
   // Called when the skills input changes
@@ -97,7 +100,18 @@ export class PostedjobComponent {
       }
     });
   }
+   
+  loadCategories(): void {
+    const token = sessionStorage.getItem('token');
+    if (!token) return;
 
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.get<any>('http://localhost:5000/api/jobcategory/getcategories', { headers }).subscribe({
+      next: res => this.categories = res.categories || res,
+      error: err => this.showToast('Failed to load categories', 'error')
+    });
+  }
    showToast(message: string, type: 'success' | 'error') {
     this.toastMessage = message;
     this.toastClass = type === 'success' ? 'toast-success' : 'toast-error';

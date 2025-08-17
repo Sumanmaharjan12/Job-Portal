@@ -1,0 +1,47 @@
+<div class="admin-jobs">
+  <h2>Manage Jobs</h2>
+
+<div *ngIf="toastMessage" [ngClass]="toastClass" class="toast">
+  {{ toastMessage }}
+</div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Loading jobs...</div>
+
+  <!-- Jobs Table -->
+  <table *ngIf="!loading && jobs.length > 0" class="jobs-table">
+    <thead>
+      <tr>
+        <th>Job ID</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Salary</th>
+        <th>Experience</th>
+        <th>Posted By</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let job of jobs">
+        <td>{{ job.jobId }}</td>
+        <td>{{ job.title }}</td>
+        <td>{{ job.category }}</td>
+        <td>{{ job.salary }}</td>
+        <td>{{ job.experience }}</td>
+        <td>{{ job.postedBy?.companyName || "N/A" }}</td>
+        <td>
+          <select
+            [(ngModel)]="job.status"
+            (change)="changeStatus(job._id, job.status)"
+          >
+            <option value="pending">Pending</option>
+            <option value="posted">Posted</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!loading && jobs.length === 0">No jobs found.</p>
+</div>

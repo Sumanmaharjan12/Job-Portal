@@ -11,6 +11,7 @@ export class PostajobComponent {
  jobForm: FormGroup;
  toastMessage = '';
  toastClass= '';
+ jobCategories: any[] = [];
  
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -70,7 +71,22 @@ export class PostajobComponent {
  onCancel() {
   this.jobForm.reset();
 }
+ngOnInit() {
+  this.loadCategories();
+}
+loadCategories() {
+  const token = sessionStorage.getItem('token'); 
+  if (!token) return;
 
+  const headers = { Authorization: `Bearer ${token}` };
+
+  this.http.get<any[]>('/api/jobcategory/getcategories', { headers }).subscribe({
+    next: (res: any) => {
+      this.jobCategories = res.categories || res; 
+    },
+    error: err => console.error(err)
+  });
+}
 showToast(message: string, type: 'success' | 'error'){
   this.toastMessage = message;
   this.toastClass= type==='success'?'toast-success':'toast-error';

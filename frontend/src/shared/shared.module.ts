@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { CategoryComponent } from './category/category.component';
 import { FillerComponent } from './filler/filler.component';
 import { HeaderComponent } from './header/header.component';
+import { JobrecommendationComponent } from './jobrecommendation/jobrecommendation.component';
 import { LandingComponent } from './landing/landing.component';
 import { PostajobComponent } from './postajob/postajob.component';
 
@@ -16,7 +17,8 @@ import { PostajobComponent } from './postajob/postajob.component';
     LandingComponent,
     FillerComponent,
     CategoryComponent,
-    PostajobComponent
+    PostajobComponent,
+    JobrecommendationComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,7 @@ import { PostajobComponent } from './postajob/postajob.component';
      FillerComponent,
      CategoryComponent,
      PostajobComponent,
+     JobrecommendationComponent
     //  RouterModule
   ]
 })

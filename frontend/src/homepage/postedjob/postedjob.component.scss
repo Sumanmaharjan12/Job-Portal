@@ -152,6 +152,20 @@ textarea{
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
+.status-pending {
+  color: #e2b100; /* yellow/orange */
+  font-weight: bold;
+}
+
+.status-posted {
+  color: #38a169; /* green */
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: #e53e3e; /* red */
+  font-weight: bold;
+}
 .toast-success {
   background-color: #38a169; /* green */
 }
