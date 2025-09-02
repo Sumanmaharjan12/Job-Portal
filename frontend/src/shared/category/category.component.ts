@@ -7,36 +7,41 @@ import { Component } from '@angular/core';
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent {
-  categories: any[] = [];
-  iconMap: { [key: string]: string } = {
-    'Digital Marketing': 'fa-bullhorn',
-    'Graphic & Design': 'fa-paint-brush',
-    'Programming & Tech': 'fa-laptop-code',
-    'Writing & Translation': 'fa-pen-nib',
-    'Business & Consulting': 'fa-briefcase',
-    // Add more as needed
-  };
+ categories: any[] = [];
+  displayedCategories: any[] = [];
 
-  constructor(private http: HttpClient) {}
+currentPage = 1;
+itemsPerPage =8;
+totalPages =1;
+  constructor(private http: HttpClient){}
 
   ngOnInit(): void {
-    this.fetchCategories();
+    this.loadCategories();
   }
 
-  fetchCategories(): void {
+  // Load existing categories from backend
+  loadCategories(): void {
     const token = sessionStorage.getItem('token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.get<any[]>('/api/jobs/categories', { headers }).subscribe({
-      next: (data) => {
-        this.categories = data;
+
+    this.http.get<any>('/api/jobcategory/getcategories', { headers }).subscribe({
+      next: res => {
+        this.categories = res || [],
+      this.totalPages = Math.ceil(this.categories.length / this.itemsPerPage);
+      this.updateDisplayedCategories();
       },
-      error: (err) => {
-        console.error('Failed to load categories', err);
-      }
+      
     });
   }
-  getIconClass(categoryName: string): string {
-    
-    return this.iconMap[categoryName] || 'fa-briefcase';
+    updateDisplayedCategories(): void {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.displayedCategories = this.categories.slice(start, end);
+  }
+
+  changePage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.updateDisplayedCategories();
   }
 }

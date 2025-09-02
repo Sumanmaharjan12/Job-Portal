@@ -65,14 +65,12 @@
         <i class="fa-solid fa-layer-group"></i>
         <span>Job Categories</span>
       </li>
-      <li class="admin-panel">
+      <li class="admin-panel"
+        routerLink="/dashboard/application"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }">
         <i class="fas fa-clipboard-check"></i>
         <span>Application</span>
-      </li>
-
-      <li class="admin-panel">
-        <i class="fas fa-cogs"></i>
-        <span>Settings</span>
       </li>
     </ul>
   </aside>

@@ -14,7 +14,7 @@ const JobSchema = new mongoose.Schema(
         salary: Number,
 
         experience: { type: String, required:true},
-        education: { type: String, required: true},
+        qualification: { type: String, required: true},
         skills: {type: [String], required: true},
         language: String,
         softSkills: String,

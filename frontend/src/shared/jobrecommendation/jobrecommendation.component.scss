@@ -117,7 +117,7 @@
 /* Toast styles */
 .toast {
   position: fixed;
-  bottom: 20px;
+  top: 20px;
   right: 20px;
   padding: 12px 20px;
   border-radius: 8px;
@@ -128,12 +128,15 @@
   animation: slideIn 0.3s ease;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
-.toast.success {
-  background-color: #38a169;
+
+.toast-success {
+  background-color: #38a169; /* green */
 }
-.toast.error {
-  background-color: #e53e3e;
+
+.toast-error {
+  background-color: #e53e3e; /* red */
 }
+
 
 /* Overlay modal */
 .overlay {

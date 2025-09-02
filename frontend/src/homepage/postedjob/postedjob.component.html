@@ -5,6 +5,13 @@
 <div class="posted">
   <div class="head">
     <h1>Posted Jobs</h1>
+     <div class="filter-bar">
+    <label for="jobFilter">Filter by Category:</label>
+    <select id="jobFilter" [(ngModel)]="selectedCategory" (change)="applyFilter()">
+      <option value="all">All</option>
+      <option *ngFor="let cat of uniqueCategories" [value]="cat">{{ cat }}</option>
+    </select>
+  </div>
   </div>
   <div class="content">
     <table>
@@ -24,7 +31,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let job of jobs">
+        <tr *ngFor="let job of filteredJobs">
           <td>{{ job.jobId }}</td>
           <td>{{ job.title }}</td>
           <!-- <td>
@@ -37,7 +44,7 @@
           <td>{{ job.type }}</td>
           <td>{{ job.salary || "-" }}</td>
           <td>{{ job.experience }}</td>
-          <td>{{ job.education }}</td>
+          <td>{{ job.qualification }}</td>
           <td>
             {{
               job.skills
@@ -97,7 +104,7 @@
             <label>Category</label>
             <select [(ngModel)]="editJobData.category" name="category" required>
               <option [ngValue]="null">-- Select Category --</option>
-              <option *ngFor="let cat of categories" [value]="cat._id">
+              <option *ngFor="let cat of categories" [ngValue]="cat._id">
                 {{ cat.name }}
               </option>
             </select>
@@ -132,18 +139,20 @@
               name="experience"
               required
             >
-              <option value="">-- Select Experience Level --</option>
-              <option value="Entry Level">Entry Level (0–1 years)</option>
-              <option value="Mid Level">Mid Level (2–4 years)</option>
-              <option value="Senior Level">Senior Level (5+ years)</option>
+             <option value="">Select experience</option>
+                <option value="Intern">Intern</option>
+                <option value="Fresher">Fresher</option>
+                <option value="1-2 years">1-2 years</option>
+                <option value="3-5 years">3-5 years</option>
+                <option value="5+ years">5+ years</option>
             </select>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-content">
-            <label>Education</label>
-            <input [(ngModel)]="editJobData.education" name="education" />
+            <label>Qualification</label>
+            <input [(ngModel)]="editJobData.qualification" name="qualification" />
           </div>
 
           <div class="form-content">

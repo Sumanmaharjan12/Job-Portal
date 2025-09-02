@@ -1,54 +1,60 @@
-.category{
+ .category-list{
     display: flex;
     flex-direction: column;
+    gap: 10px;
     max-width: 1400px;
-    padding: 60px 80px;
-    gap: 40px;
-}
-.category h1{
+    padding: 0px 60px;
+    background-color: #f6f6f6;
+    
+  }
+  h3{
     font-size: var(--Heading-size);
-    color: var(--Heading-color);
-}
-.container{
+  }
+  .category-content{
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-}
-.content{
+    gap: 10px;
+  }
+  .category-item{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     gap: 20px;
     width: 20%;
-    height: 150px;
-    background-color: var(--gray-color);
-    padding: 20px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-.content i{
-    font-size: var(--Heading-size);
-    text-align: center;
-
-}
-.content:hover{
-     background-color: #66C3F4;
-     color: var(--Background-color);
-}
-.detail{
-    display: flex;
-    flex-direction: column;
-    gap: 0px;
     align-items: center;
     justify-content: center;
+    border-radius: 20px;
+    padding: 20px 20px;
+    background-color: var(--Background-color);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+  .category-item img{
+    width: 50px;
+    height: 50px;
+  }
+  .category-item span{
+    font-size: var(--small-size);
+  }
+  .pagination {
+  margin-top: 20px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
 }
-.content h2{
-    font-size: var(--Subheading-size);
-    color: var(--Subheading-color);
+
+.pagination button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
 }
-.content p{
-    font-size: var(--body-size);
-    color: var(--Subheading-color);
+
+.pagination button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }

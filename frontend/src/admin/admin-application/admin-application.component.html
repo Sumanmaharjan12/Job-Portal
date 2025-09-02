@@ -1,0 +1,91 @@
+<div class="admin-applications">
+
+  <!-- Toast Message -->
+  <div *ngIf="message" class="toast" [ngClass]="messageType">
+    {{ message }}
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="loading">
+    Loading Applications...
+  </div>
+
+  <!-- Filters & Sorting -->
+  <div class="filters">
+    <!-- Filter by Company -->
+    <input
+      type="text"
+      placeholder="Filter by Company"
+      [(ngModel)]="filters.company"
+      (input)="loadApplications()"
+    />
+
+    <!-- Filter by Category -->
+    <select [(ngModel)]="filters.category" (change)="loadApplications()">
+      <option value="">All Categories</option>
+      <option *ngFor="let cat of categories" [value]="cat">
+        {{ cat }}
+      </option>
+    </select>
+
+    <!-- Sort By -->
+    <select [(ngModel)]="filters.sortBy" (change)="loadApplications()">
+      <option value="">Sort By</option>
+      <option value="company">Company</option>
+      <option value="category">Category</option>
+    </select>
+
+    <!-- Export Buttons -->
+    <button class="btn" (click)="exportData('csv')">Export CSV</button>
+    <button class="btn" (click)="exportData('excel')">Export Excel</button>
+  </div>
+
+  <!-- Applications Table -->
+  <table *ngIf="!loading && applications.length > 0" class="content">
+    <thead>
+      <tr>
+        <th>Applicant Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Job Title</th>
+        <th>Category</th>
+        <th>Company</th>
+        <th>Status</th>
+        <th>Applied At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let app of applications">
+        <td>{{ app.ApplicantName }}</td>
+        <td>{{ app.ApplicantEmail }}</td>
+        <td>{{ app.Phone }}</td>
+        <td>{{ app.JobTitle }}</td>
+        <td>{{ app.JobCategory }}</td>
+        <td>{{ app.CompanyName }}</td>
+        <td>
+          <span [ngClass]="{
+            'status-pending': app.Status === 'pending',
+            'status-accepted': app.Status === 'accepted',
+            'status-rejected': app.Status === 'rejected'
+          }">
+            {{ app.Status }}
+          </span>
+        </td>
+        <td>{{ app.AppliedAt | date: 'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Data -->
+  <div *ngIf="!loading && applications.length === 0" class="no-data">
+    No applications found.
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+
+</div>

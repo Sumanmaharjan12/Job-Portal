@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Job = require("../models/job");
 const User = require("../models/user-profile");
 const Application = require('../models/application');
-const Category = require("../models/jobcategory");
 
 const postJob = async(req, res)=> {
     try{
@@ -144,26 +143,35 @@ const updateJob = async (req, res) => {
       "type",
       "salary",
       "experience",
-      "education",
+      "qualification",
       "skills",
       "language",
       "softSkills",
       "status"
     ];
 
-    allowedUpdates.forEach(field => {
-      if (field in updateData) {
-        if (field === "category") job.category = updateData.category;
-      }
-    });
-
-    if (typeof job.skills === 'string') {
-      job.skills = job.skills.split(',').map(s => s.trim()).filter(s => s.length > 0);
+   allowedUpdates.forEach(field => {
+  if (field in updateData) {
+    switch(field){
+      case "skills":
+        job.skills = typeof updateData.skills === "string"
+          ? updateData.skills.split(',').map(s => s.trim()).filter(Boolean)
+          : updateData.skills;
+        break;
+      case "category":
+        if (updateData.category && mongoose.isValidObjectId(updateData.category)) {
+          job.category = updateData.category;
+        }
+        break;
+      default:
+        job[field] = updateData[field];
     }
+  }
+});
 
     await job.save();
-
-    res.json({ message: "Job updated successfully", job });
+    const populatedJob = await job.populate("category", "name");
+    res.json({ message: "Job updated successfully", job:populatedJob });
   } catch (error) {
     console.error("Error in updateJob:", error);
     res.status(500).json({ error: "Failed to update job" });

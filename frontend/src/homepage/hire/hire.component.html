@@ -3,7 +3,18 @@
   {{ toastMessage }}
 </div>
 <div class="content">
-  <h1>Applicants for Your Jobs</h1>
+  <div class="head">
+    <h1>Applicants for Your Jobs</h1>
+    <div class="filter-bar">
+      <label for="jobFilter">Filter by Job:</label>
+      <select id="jobFilter" [(ngModel)]="selectedJob" (change)="applyFilter()">
+        <option value="all">All</option>
+        <option *ngFor="let job of uniqueJobTitles" [value]="job">
+          {{ job }}
+        </option>
+      </select>
+    </div>
+  </div>
   <table class="hire-table">
     <thead>
       <tr>
@@ -19,7 +30,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let app of applications">
+      <tr *ngFor="let app of filteredApplications">
         <td>
           <img [src]="'http://localhost:5000/' + app.imageUrl" alt="profile" />
         </td>
@@ -44,7 +55,7 @@
         <td>
           <select
             [(ngModel)]="app.status"
-            (change)="updateStatus(app._id, app.status)"
+            (change)="onStatusChange(app, app.status)"
           >
             <option value="pending">Pending</option>
             <option value="accepted">Accepted</option>
@@ -54,4 +65,22 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div class="modal-backdrop" *ngIf="showOverlay">
+  <div class="modal">
+    <h2>Schedule Interview</h2>
+    <p><strong>Applicant:</strong> {{ selectedApplication?.name }}</p>
+    <p><strong>Job Title:</strong> {{ selectedApplication?.jobTitle }}</p>
+
+    <input 
+      type="datetime-local" 
+      [(ngModel)]="selectedApplication.interviewDate" 
+      class="form-control"
+    />
+
+    <div class="modal-actions">
+      <button class="btn btn-success" (click)="saveInterviewDate()">Save</button>
+      <button class="btn btn-secondary" (click)="closeOverlay()">Cancel</button>
+    </div>
+  </div>
 </div>

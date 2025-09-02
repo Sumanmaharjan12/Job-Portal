@@ -10,6 +10,7 @@ import { AdminjobseekerComponent } from './adminjobseeker/adminjobseeker.compone
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminjobsComponent } from './adminjobs/adminjobs.component';
 import { JobcategoriesComponent } from './jobcategories/jobcategories.component';
+import { AdminApplicationComponent } from './admin-application/admin-application.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { JobcategoriesComponent } from './jobcategories/jobcategories.component'
     AdminjobseekerComponent,
     AdminjobkeeperComponent,
     AdminjobsComponent,
-    JobcategoriesComponent
+    JobcategoriesComponent,
+    AdminApplicationComponent
   ],
   imports: [
     CommonModule,

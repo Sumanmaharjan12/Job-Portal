@@ -29,6 +29,7 @@ const ApplicationSchema = new mongoose.Schema({
 
   jobTitle: String,
   companyName: String,
+  interviewDate: { type: Date, default: null }, 
 });
 
 

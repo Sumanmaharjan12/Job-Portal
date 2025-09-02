@@ -21,7 +21,7 @@
         <h2>{{ job.title }}</h2>
 
         <div class="types">
-           <span>{{ job.category?.name || '-' }}</span>
+          <span>{{ job.category?.name || "-" }}</span>
           <span>{{ job.type }}</span>
         </div>
       </div>
@@ -46,11 +46,11 @@
         <p><strong>Company:</strong> {{ selectedJob.postedBy.companyName }}</p>
         <p><strong>Salary:</strong> {{ selectedJob.salary }}</p>
         <p><strong>Experience:</strong> {{ selectedJob.experience }}</p>
-        <p *ngIf="selectedJob._matchedSkills?.length">
+        <p><strong>Education:</strong> {{ selectedJob.education }}</p>
+        <p *ngIf="selectedJob._matchedSkills?.skills?.length">
           <strong>Matched Skills:</strong>
-          {{ selectedJob._matchedSkills.join(", ")| uppercase }}
+          {{ selectedJob._matchedSkills.skills.join(", ") | uppercase }}
         </p>
-        
       </div>
 
       <p><strong>Description:</strong></p>

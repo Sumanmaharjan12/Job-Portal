@@ -1,0 +1,88 @@
+.admin-applications {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filters input,
+.filters select,
+.filters button {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+}
+
+.toast {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.toast.success {
+  background: #4caf50;
+  color: white;
+}
+
+.toast.error {
+  background: #f44336;
+  color: white;
+}
+
+.content {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.content th,
+.content td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.content th {
+  background-color: #f2f2f2;
+}
+
+.status-pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-accepted {
+  color: green;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
+}

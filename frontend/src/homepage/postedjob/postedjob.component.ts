@@ -8,6 +8,9 @@ import { Component } from '@angular/core';
 })
 export class PostedjobComponent {
   jobs: any[] = [];
+  filteredJobs: any[] = [];
+  uniqueCategories: string[] = [];
+  selectedCategory: string = 'all';
    categories: any[] = [];
 
   toastMessage= '';
@@ -34,12 +37,31 @@ export class PostedjobComponent {
       next:(res) =>{
         console.log('Fetched Jobs:', res);
         this.jobs = res;
+          this.filteredJobs = this.jobs;
+
+       
+        this.uniqueCategories = [
+          ...new Set(
+            this.jobs
+              .map(job => job.category?.name) 
+              .filter(Boolean)                
+          )
+        ];
       },
       error:(err)=>{
         console.error('err');
         this.showToast('Failed to load jobs', 'error');
       }
     });
+  }
+   applyFilter(): void {
+    if (this.selectedCategory === 'all') {
+      this.filteredJobs = this.jobs;
+    } else {
+      this.filteredJobs = this.jobs.filter(
+        job => job.category?.name === this.selectedCategory
+      );
+    }
   }
   // deleted job
   deleteJob(jobId: string): void {
@@ -68,7 +90,7 @@ export class PostedjobComponent {
   this.editJobData.skillsString = Array.isArray(this.editJobData.skills)
   ? this.editJobData.skills.join(', ')
   : this.editJobData.skills || '';
-  this.editJobData.category = job.category?._id || job.category || null;
+ this.editJobData.category = job.category?._id || job.category || '';
   }
 
   // Called when the skills input changes
@@ -91,7 +113,7 @@ export class PostedjobComponent {
         
         const index = this.jobs.findIndex(job => job.jobId === this.editJobData.jobId);
         if (index !== -1) {
-          this.jobs[index] = { ...this.editJobData };
+          this.jobs[index] = res.job;
         }
       },
       error: (err) => {

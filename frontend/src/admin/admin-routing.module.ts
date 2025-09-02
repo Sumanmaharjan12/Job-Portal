@@ -6,6 +6,7 @@ import { AdminjobsComponent } from './adminjobs/adminjobs.component';
 import { AdminjobseekerComponent } from './adminjobseeker/adminjobseeker.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { JobcategoriesComponent } from './jobcategories/jobcategories.component';
+import { AdminApplicationComponent } from './admin-application/admin-application.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
          { path: 'adminjobkeeper', component: AdminjobkeeperComponent },
            { path: 'adminjobs', component: AdminjobsComponent },
            { path: 'jobcategory', component: JobcategoriesComponent },
+            { path: 'application', component: AdminApplicationComponent },
      
     ]
   },

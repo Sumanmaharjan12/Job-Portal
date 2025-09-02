@@ -72,21 +72,23 @@
               formControlName="experience"
               required
             >
-              <option value="">-- Select Experience Level --</option>
-              <option value="Entry Level">Entry Level (0–1 years)</option>
-              <option value="Mid Level">Mid Level (2–4 years)</option>
-              <option value="Senior Level">Senior Level (5+ years)</option>
+              <option value="" disabled selected>Select experience</option>
+                <option value="Intern">Intern</option>
+                <option value="Fresher">Fresher</option>
+                <option value="1-2 years">1-2 years</option>
+                <option value="3-5 years">3-5 years</option>
+                <option value="5+ years">5+ years</option>
             </select>
           </div>
         </div>
         <div class="content">
-          <label for="education">Education</label>
+          <label for="qualification">Qualification</label>
           <input
             type="text"
-            id="education"
-            name="education"
+            id="qualification"
+            name="qualification"
             placeholder="e.g. Bachelor's in Computer Science"
-            formControlName="education"
+            formControlName="qualification"
             required
           />
         </div>

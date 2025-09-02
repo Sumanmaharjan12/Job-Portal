@@ -93,13 +93,13 @@ getDaysAgo(dateString: string): string {
   });
 }
 
-  showToast(message: string, type: 'success' | 'error') {
-    this.toastMessage = message;
-    this.toastClass = type === 'success' ? 'toast-success' : 'toast-error';
-
-    setTimeout(() => {
-      this.toastMessage = '';
-      this.toastClass = '';
-    }, 3000);
-  }
+  showToast(message: string, type: 'success' | 'error'){
+  this.toastMessage = message;
+  this.toastClass= type==='success'?'toast-success':'toast-error';
+  
+  setTimeout(() => {
+    this.toastMessage='';
+    this.toastClass='';
+  }, 3000);
+}
 }

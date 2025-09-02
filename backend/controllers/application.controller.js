@@ -2,6 +2,7 @@ const Application = require('../models/application');
 const Job = require('../models/job');
 const User = require('../models/user.model')
 const UserProfile = require('../models/user-profile');
+const sendEmail = require('../utils/SendEmail');
 
 const applyJob = async(req,res) =>{
     try{
@@ -118,7 +119,7 @@ const updateApplications = async(req,res) => {
   try{
     const jobkeeperId = req.user._id;
     const {applicationId} = req.params
-    const {status} = req.body;
+    const {status, interviewDate} = req.body;
 
     if(!['pending', 'accepted','rejected'].includes(status)){
       return res.status(400).json({message:'Invalid status value'});
@@ -131,11 +132,46 @@ const updateApplications = async(req,res) => {
       return res.status(404).json({message:'Applcation not found'});
     }
     application.status = status;
+    if(status === 'accepted') {
+      if(!interviewDate) {
+        return res.status(400).json({ message: 'Interview date is required when accepting an application' });
+      }
+      application.interviewDate = new Date(interviewDate);
+
+      // Send email to jobseeker
+      const emailHtml = `
+        <p>Hi ${application.name},</p>
+        <p>Congratulations! You have been accepted for the job: <strong>${application.jobTitle}</strong>.</p>
+        <p>Your interview is scheduled on <strong>${new Date(interviewDate).toLocaleString()}</strong>.</p>
+        <p>Best of luck!</p>
+        <p>-- Job Nepal</p>
+      `;
+      await sendEmail({
+        to: application.email,
+        subject: 'Interview Scheduled for Your Application',
+        html: emailHtml
+      });
+    }
+
+    // If rejected, send rejection email
+    if(status === 'rejected') {
+      const emailHtml = `
+        <p>Hi ${application.name},</p>
+        <p>We regret to inform you that your application for <strong>${application.jobTitle}</strong> has been rejected.</p>
+        <p>Thank you for applying!</p>
+        <p>-- Job Nepal</p>
+      `;
+      await sendEmail({
+        to: application.email,
+        subject: 'Application Status Update',
+        html: emailHtml
+      });
+    }
     await application.save();
     res.status(200).json({message: 'Application status updated successfully'});
   } catch(error){
       console.error('updateApplicationStatus error:',error);
-      res.status(500).json({message: 'Server error'});
+      res.status(500).json({message: error.message});
     }
   };
 

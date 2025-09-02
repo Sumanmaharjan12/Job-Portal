@@ -17,6 +17,7 @@ const adminUserRoutes = require('./routes/adminUser.routes');
 const adminJobRoutes = require('./routes/adminJobRoutes');
 const recommendationRoutes = require('./routes/recommendation');
 const jobCategoryRoutes = require('./routes/jobCategoryRoutes');
+const adminApplicationRoutes = require('./routes/adminApplicationRoutes');
 // middleware
 const authMiddleware = require('./middleware/auth.middleware');
 
@@ -58,6 +59,9 @@ app.use("/api/recommendations",recommendationRoutes);
 
 // for jobCategory
 app.use("/api/jobcategory",jobCategoryRoutes);
+
+// for admin application
+app.use("/api/adminapplication",adminApplicationRoutes);
 // Serve static uploaded files
 app.use('/uploads', express.static('uploads'));
 
