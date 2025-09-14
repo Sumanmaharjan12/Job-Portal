@@ -20,6 +20,7 @@ const jobCategoryRoutes = require('./routes/jobCategoryRoutes');
 const adminApplicationRoutes = require('./routes/adminApplicationRoutes');
 // middleware
 const authMiddleware = require('./middleware/auth.middleware');
+const cvRoutes = require("./routes/cvRoutes");
 
 // enable cross-origin resource sharing 
 app.use(cors());
@@ -62,6 +63,10 @@ app.use("/api/jobcategory",jobCategoryRoutes);
 
 // for admin application
 app.use("/api/adminapplication",adminApplicationRoutes);
+
+// for cv 
+app.use("/api/cv", cvRoutes);
+
 // Serve static uploaded files
 app.use('/uploads', express.static('uploads'));
 

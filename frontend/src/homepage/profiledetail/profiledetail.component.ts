@@ -18,6 +18,8 @@ export class ProfiledetailComponent {
   role: 'JobKeeper' | 'JobSeeker' = 'JobSeeker';
 
   isEditing = false;
+   isValidating: boolean = false;
+  isSaving: boolean = false;
 
  
   constructor(private http:HttpClient){}
@@ -43,12 +45,12 @@ export class ProfiledetailComponent {
     }
       
         
-         // ✅ Format establishedDate
+         // Format establishedDate
       if (res.establishedDate) {
         res.establishedDate = res.establishedDate.substring(0, 10);
       }
 
-      // ✅ Format dob
+      // Format dob
       if (res.dob) {
         res.dob = res.dob.substring(0, 10);
       }
@@ -83,65 +85,114 @@ export class ProfiledetailComponent {
       this.selectedFileName = null;
       this.selectedFile = null;
     }
+    
   }
 
- onSave(): void {
+onSave(): void {
   const token = sessionStorage.getItem('token');
-  const formData = new FormData();
-
-  // ✅ Append known fields
-  formData.append('role', this.profile.role || '');
-  formData.append('phone', this.profile.phone || '');
-  formData.append('location', this.profile.location || '');
-  formData.append('gender', this.profile.gender || '');
-  formData.append('dob', this.profile.dob || '');
-  formData.append('qualification', this.profile.qualification || '');
-  formData.append('experience', this.profile.experience || '');
-  formData.append('companyName', this.profile.companyName || '');
-  formData.append('companyAddress', this.profile.companyAddress || '');
-  formData.append('companyWebsite', this.profile.companyWebsite || '');
-  formData.append('establishedDate', this.profile.establishedDate || '');
-  formData.append('jobOpenings', this.profile.jobOpenings || '');
-
-  // ✅ Make sure name & email are plain strings
-  formData.append('name', this.profile.name ? String(this.profile.name) : '');
-  formData.append('email', this.profile.email ? String(this.profile.email) : '');
-
-  // ✅ skills may be array → stringify only this
-  if (Array.isArray(this.profile.skills)) {
-    formData.append('skills', JSON.stringify(this.profile.skills));
-  } else {
-    formData.append('skills', this.profile.skills || '');
+  if (!token) {
+    this.showToast('You are not logged in', 'error');
+    return;
   }
 
-  // ✅ Append file if selected
+  const saveProfile = () => {
+    const formData = new FormData();
+    formData.append('role', this.profile.role || '');
+    formData.append('phone', this.profile.phone || '');
+    formData.append('location', this.profile.location || '');
+    formData.append('gender', this.profile.gender || '');
+    formData.append('dob', this.profile.dob || '');
+    formData.append('qualification', this.profile.qualification || '');
+    formData.append('experience', this.profile.experience || '');
+    formData.append('companyName', this.profile.companyName || '');
+    formData.append('companyAddress', this.profile.companyAddress || '');
+    formData.append('companyWebsite', this.profile.companyWebsite || '');
+    formData.append('establishedDate', this.profile.establishedDate || '');
+    formData.append('jobOpenings', this.profile.jobOpenings || '');
+    formData.append('name', this.profile.name || '');
+    formData.append('email', this.profile.email || '');
+    formData.append('skills', Array.isArray(this.profile.skills) ? JSON.stringify(this.profile.skills) : (this.profile.skills || ''));
+    if (this.selectedFile) formData.append('cv', this.selectedFile);
+
+    this.isSaving = true;
+
+    this.http.put<any>('http://localhost:5000/api/profile/update', formData, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: (res) => {
+        this.showToast('Profile updated successfully', 'success');
+        this.isEditing = false;
+        this.selectedFile = null;
+        this.selectedFileName = null;
+        this.profile = {
+          ...this.profile,
+          ...res.profile,
+          name: res.user?.name || this.profile.name,
+          email: res.user?.email || this.profile.email
+        };
+      },
+      error: (err) => {
+        console.error(err);
+        this.showToast('Failed to update profile', 'error');
+      },
+      complete: () => {
+        this.isSaving = false;
+      }
+    });
+  };
+
   if (this.selectedFile) {
-    formData.append('cv', this.selectedFile);
-  }
+  const validationData = new FormData();
+  validationData.append('file', this.selectedFile);
 
-  this.http.put<any>('http://localhost:5000/api/profile/update', formData, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }).subscribe({
+  this.isValidating = true;
+
+  this.http.post<{
+    is_valid: boolean;
+    confidence: number;
+    keywords_found: string[];
+    message: string;
+  }>(
+    'http://127.0.0.1:5001/validate-cv',
+    validationData
+  ).subscribe({
     next: (res) => {
-      this.showToast('Profile updated successfully', 'success');
-      this.isEditing = false;
-      this.selectedFileName = null;
-      this.selectedFile = null;
-      this.profile ={
-        ...this.profile,
-        ...res.profile,
-        name: res.user?.name || this.profile.name,
-        email: res.user?.email || this.profile.email,
-      };
+      console.log('CV validation response:', res);
+
+      // Ensure keywords_found is an array
+      const keywordsFound = Array.isArray(res.keywords_found) ? res.keywords_found : [];
+
+      // Accept CV if ML says valid OR at least 3 keywords found
+      const keywordAcceptance = keywordsFound.length >= 3;
+      const isValid = res.is_valid === true || keywordAcceptance;
+
+      if (isValid) {
+        this.showToast(
+          `CV accepted ✅ | Confidence: ${res.confidence} | Keywords: ${keywordsFound.join(', ')}`,
+          'success'
+        );
+        saveProfile();
+      } else {
+        this.showToast(
+          `CV rejected ❌: ${res.message || 'Not a valid CV'} | Keywords: ${keywordsFound.join(', ')}`,
+          'error'
+        );
+      }
     },
     error: (err) => {
-      this.showToast('Failed to update profile', 'error');
-      console.error(err);
+      console.error('CV validation failed', err);
+      this.showToast('Failed to validate CV. Try again.', 'error');
+    },
+    complete: () => {
+      this.isValidating = false;
     }
   });
+} else {
+  saveProfile();
 }
+}
+
+
   showToast(message: string, type: 'success' | 'error'){
   this.toastMessage = message;
   this.toastClass= type==='success'?'toast-success':'toast-error';

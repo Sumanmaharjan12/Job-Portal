@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -48,7 +49,7 @@ jobOpenings: number | null = null;
     userRole: string = '';
 
   
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
   
 
   ngOnInit() {
@@ -108,39 +109,81 @@ jobOpenings: number | null = null;
     }
   }
 
- onCvSelected(event: Event) {
+onCvSelected(event: Event) {
   const input = event.target as HTMLInputElement;
   const file = input.files?.[0];
-  const maxSize = 800 * 1024; // 800 KB
+  const maxSize = 2 * 1024 * 1024; // 2 MB
 
-  if (!file) {
-    this.cvFile = null;
-    this.cvFileName = null;
+  // Reset previous file
+  this.cvFile = null;
+  this.cvFileName = null;
+
+  if (!file) return;
+
+  // Check file type
+  if (file.type.toLowerCase() !== 'application/pdf') {
+    this.setMessage('Only PDF files are allowed.', 'error');
+    input.value = '';
     return;
   }
 
-  // Type check
-  if (file.type !== 'application/pdf') {
-    alert('Only PDF files are allowed.');
-    input.value = ''; // reset input
-    this.cvFile = null;
-    this.cvFileName = null;
-    return;
-  }
-
-  // Size check
+  // Check file size
   if (file.size > maxSize) {
-    alert('File size must be less than 800 KB.');
-    input.value = ''; // reset input
-    this.cvFile = null;
-    this.cvFileName = null;
+    this.setMessage('File size must be less than 2 MB.', 'error');
+    input.value = '';
     return;
   }
 
-  // Valid file
-  this.cvFile = file;
-  this.cvFileName = file.name;
+  // Prepare FormData
+  const formData = new FormData();
+  formData.append('file', file);
+
+  // Send to backend for CV validation
+  this.http.post<{
+    is_valid: boolean;
+    confidence: number;
+    keywords_found: string[];
+    message: string;
+  }>('http://127.0.0.1:5001/validate-cv', formData)
+  .subscribe({
+    next: (res) => {
+      console.log('[DEBUG] CV validation response:', res);
+
+      const keywordsFound = Array.isArray(res.keywords_found) ? res.keywords_found : [];
+      const MIN_KEYWORDS = 3;
+
+      // ✅ Accept if ML model says valid OR enough keywords are present
+      const keywordAcceptance = keywordsFound.length >= MIN_KEYWORDS;
+      const isValid = (res.is_valid === true) || keywordAcceptance;
+
+      console.log(`[DEBUG] Keyword acceptance: ${keywordAcceptance}, Final isValid: ${isValid}`);
+
+      if (isValid) {
+        this.cvFile = file;
+        this.cvFileName = file.name;
+
+        this.setMessage(
+          `CV accepted ✅ | Confidence: ${res.confidence} | Keywords found: ${keywordsFound.join(', ')}`,
+          'success'
+        );
+      } else {
+        this.setMessage(
+          `CV rejected : ${res.message} | Keywords found: ${keywordsFound.join(', ')}`,
+          'error'
+        );
+        input.value = ''; // reset file input
+      }
+    },
+    error: (err) => {
+      console.error('[ERROR] CV validation failed:', err);
+      this.setMessage('Failed to validate CV. Please try again.', 'error');
+      input.value = '';
+    }
+  });
 }
+
+
+
 
 
 

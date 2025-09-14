@@ -23,7 +23,7 @@ export class PostajobComponent {
       type: ['', Validators.required],
       salary: [''],
       experience: ['', Validators.required],
-      education: ['', Validators.required],
+      qualification: ['', Validators.required],
       skills: ['', Validators.required],
       language: [''],
       softSkills: ['']
