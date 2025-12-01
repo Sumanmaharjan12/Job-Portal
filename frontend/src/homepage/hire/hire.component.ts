@@ -1,16 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-hire',
   templateUrl: './hire.component.html',
   styleUrls: ['./hire.component.scss']
 })
-export class HireComponent {
-applications: any[] = [];
+export class HireComponent implements OnInit {
+  applications: any[] = [];
   filteredApplications: any[] = [];
-  selectedJob: string = 'all';
   uniqueJobTitles: string[] = [];
+  selectedJob: string = 'all';
   toastMessage = '';
   toastClass = '';
   showOverlay = false;
@@ -25,82 +25,76 @@ applications: any[] = [];
   loadApplications(): void {
     const token = sessionStorage.getItem('token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
     this.http.get<any[]>('/api/applications/getApplications', { headers }).subscribe({
       next: (data) => {
         this.applications = data;
-        this.filteredApplications = this.applications;
-        this.uniqueJobTitles = [...new Set(this.applications.map(app => app.jobTitle))];
+        this.uniqueJobTitles = [...new Set(data.map(app => app.jobTitle))];
+        this.applyFilter();
       },
-      error: () => {
-        this.showToast('Failed to load applications', 'error');
-      }
+      error: () => this.showToast('Failed to load applications', 'error')
     });
   }
 
-  applyFilter() {
+  applyFilter(): void {
     if (this.selectedJob === 'all') {
-      this.filteredApplications = this.applications;
+      // Shuffle randomly for "all"
+      this.filteredApplications = [...this.applications].sort(() => Math.random() - 0.5);
+      // Remove rank
+      this.filteredApplications.forEach(app => delete app.rank);
     } else {
-      this.filteredApplications = this.applications.filter(app => app.jobTitle === this.selectedJob);
-    }
-  }
-  onStatusChange(application: any, newStatus: string) {
-    if (newStatus === 'accepted') {
-      // Open overlay to select interview date first
-      this.openOverlay(application);
-    } else {
-      // Directly update pending/rejected status
-      this.updateStatus(application._id, newStatus);
+      // Filter by job title and sort by score
+      const filtered = this.applications
+        .filter(app => app.jobTitle === this.selectedJob)
+        .sort((a, b) => (b.score || 0) - (a.score || 0));
+      // Add rank
+      this.filteredApplications = filtered.map((app, index) => ({ ...app, rank: index + 1 }));
     }
   }
 
-  updateStatus(applicationId: string, newStatus: string): void {
+  onStatusChange(app: any, newStatus: string): void {
+    if (newStatus === 'accepted') {
+      this.openOverlay(app);
+    } else {
+      this.updateStatus(app._id, newStatus);
+    }
+  }
+
+  updateStatus(applicationId: string, status: string, interviewDate?: string): void {
     const token = sessionStorage.getItem('token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.put(`/api/applications/update-status/${applicationId}`, { status: newStatus }, { headers })
-      .subscribe({
-        next: () => {
-          this.showToast('Status updated!', 'success');
-           this.loadApplications();
+    const body: any = { status };
+    if (interviewDate) body.interviewDate = interviewDate;
 
-        },
-        error: () => {
-          this.showToast('Failed to update status', 'error');
-        }
-      });
+    this.http.put(`/api/applications/update-status/${applicationId}`, body, { headers }).subscribe({
+      next: () => {
+        this.showToast('Status updated successfully', 'success');
+        this.showOverlay = false;
+        this.loadApplications();
+      },
+      error: () => this.showToast('Failed to update status', 'error')
+    });
   }
 
-  openOverlay(application: any) {
-    this.selectedApplication = { ...application };
+  openOverlay(app: any): void {
+    this.selectedApplication = { ...app };
     this.showOverlay = true;
   }
 
-  closeOverlay() {
+  closeOverlay(): void {
     this.showOverlay = false;
     this.selectedApplication = null;
   }
 
-  saveInterviewDate() {
-    if (!this.selectedApplication) return;
-    const token = sessionStorage.getItem('token') || '';
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.put(`/api/applications/update-status/${this.selectedApplication._id}`, {
-      status: 'accepted',
-      interviewDate: this.selectedApplication.interviewDate
-    }, { headers }).subscribe({
-      next: () => {
-        this.showToast('Interview date saved & email sent!', 'success');
-        this.showOverlay = false;
-        this.loadApplications();
-      },
-      error: () => {
-        this.showToast('Failed to save interview date', 'error');
-      }
-    });
+  saveInterviewDate(): void {
+    if (!this.selectedApplication?.interviewDate) {
+      this.showToast('Please select interview date', 'error');
+      return;
+    }
+    this.updateStatus(this.selectedApplication._id, 'accepted', this.selectedApplication.interviewDate);
   }
 
-  showToast(message: string, type: 'success' | 'error') {
+  showToast(message: string, type: 'success' | 'error'): void {
     this.toastMessage = message;
     this.toastClass = type === 'success' ? 'toast-success' : 'toast-error';
     setTimeout(() => {
@@ -109,4 +103,3 @@ applications: any[] = [];
     }, 3000);
   }
 }
-

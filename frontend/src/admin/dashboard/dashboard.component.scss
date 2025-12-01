@@ -1,11 +1,12 @@
 .admin-layout {
   display: flex;
   justify-content: space-between;
-  height: 100vh;
+  height: 120vh;
 }
 
 .sidebar {
-  width: 23%;
+  width: 300px;   /* fixed width for sidebar */
+  flex-shrink: 0;
   background-color: #1e1e2f;
   color: white;
   padding: 20px;

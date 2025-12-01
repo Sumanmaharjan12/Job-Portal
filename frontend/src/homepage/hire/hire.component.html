@@ -1,7 +1,9 @@
 <app-header></app-header>
+
 <div *ngIf="toastMessage" [ngClass]="toastClass" class="toast">
   {{ toastMessage }}
 </div>
+
 <div class="content">
   <div class="head">
     <h1>Applicants for Your Jobs</h1>
@@ -9,15 +11,16 @@
       <label for="jobFilter">Filter by Job:</label>
       <select id="jobFilter" [(ngModel)]="selectedJob" (change)="applyFilter()">
         <option value="all">All</option>
-        <option *ngFor="let job of uniqueJobTitles" [value]="job">
-          {{ job }}
-        </option>
+        <option *ngFor="let job of uniqueJobTitles" [value]="job">{{ job }}</option>
       </select>
     </div>
   </div>
+
   <table class="hire-table">
     <thead>
       <tr>
+        <th *ngIf="selectedJob !== 'all'">Rank</th>
+        <th *ngIf="selectedJob !== 'all'">Score</th>
         <th>Profile</th>
         <th>Name</th>
         <th>Email</th>
@@ -31,9 +34,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let app of filteredApplications">
-        <td>
-          <img [src]="'http://localhost:5000/' + app.imageUrl" alt="profile" />
-        </td>
+        <td *ngIf="selectedJob !== 'all'">{{ app.rank }}</td>
+         <td *ngIf="selectedJob !== 'all'">{{ app.score || 0 }}</td> 
+        <td><img [src]="'http://localhost:5000/' + app.imageUrl" alt="profile" /></td>
         <td>{{ app.name }}</td>
         <td>{{ app.email }}</td>
         <td>{{ app.phone }}</td>
@@ -41,22 +44,13 @@
         <td>
           <ng-container *ngFor="let skill of app.skills; let i = index">
             {{ skill }}<span *ngIf="(i + 1) % 2 === 0"><br /></span>
-            <span *ngIf="(i + 1) % 2 !== 0 && i + 1 !== app.skills.length"
-              >,
-            </span>
+            <span *ngIf="(i + 1) % 2 !== 0 && i + 1 !== app.skills.length">, </span>
           </ng-container>
         </td>
-        <td>
-          <a [href]="'http://localhost:5000/' + app.cvUrl" target="_blank"
-            >View CV</a
-          >
-        </td>
+        <td><a [href]="'http://localhost:5000/' + app.cvUrl" target="_blank">View CV</a></td>
         <td>{{ app.jobTitle }}</td>
         <td>
-          <select
-            [(ngModel)]="app.status"
-            (change)="onStatusChange(app, app.status)"
-          >
+          <select [(ngModel)]="app.status" (change)="onStatusChange(app, app.status)">
             <option value="pending">Pending</option>
             <option value="accepted">Accepted</option>
             <option value="rejected">Rejected</option>
@@ -66,17 +60,15 @@
     </tbody>
   </table>
 </div>
+
+<!-- Overlay for interview -->
 <div class="modal-backdrop" *ngIf="showOverlay">
   <div class="modal">
     <h2>Schedule Interview</h2>
     <p><strong>Applicant:</strong> {{ selectedApplication?.name }}</p>
     <p><strong>Job Title:</strong> {{ selectedApplication?.jobTitle }}</p>
 
-    <input 
-      type="datetime-local" 
-      [(ngModel)]="selectedApplication.interviewDate" 
-      class="form-control"
-    />
+    <input type="datetime-local" [(ngModel)]="selectedApplication.interviewDate" class="form-control" />
 
     <div class="modal-actions">
       <button class="btn btn-success" (click)="saveInterviewDate()">Save</button>

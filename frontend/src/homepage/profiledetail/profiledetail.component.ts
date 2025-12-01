@@ -168,13 +168,13 @@ onSave(): void {
 
       if (isValid) {
         this.showToast(
-          `CV accepted ✅ | Confidence: ${res.confidence} | Keywords: ${keywordsFound.join(', ')}`,
+          `CV accepted | Confidence: ${res.confidence}`,
           'success'
         );
         saveProfile();
       } else {
         this.showToast(
-          `CV rejected ❌: ${res.message || 'Not a valid CV'} | Keywords: ${keywordsFound.join(', ')}`,
+          `CV rejected: ${res.message || 'Not a valid CV'}`,
           'error'
         );
       }

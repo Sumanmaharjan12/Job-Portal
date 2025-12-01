@@ -36,6 +36,7 @@ jobKeepers: any[] = [];
       }
     });
   }
+  
 
   deleteJobSeeker(userId: string): void {
     if (!confirm('Are you sure you want to delete this job seeker?')) return;

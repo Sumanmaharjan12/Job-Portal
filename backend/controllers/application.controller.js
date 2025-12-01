@@ -3,6 +3,7 @@ const Job = require('../models/job');
 const User = require('../models/user.model')
 const UserProfile = require('../models/user-profile');
 const sendEmail = require('../utils/SendEmail');
+const {calculateScore} = require('../utils/applicationScore');
 
 const applyJob = async(req,res) =>{
     try{
@@ -70,7 +71,15 @@ const getApplications = async (req, res) => {
     let applications;
 
     if (userRole === 'jobkeeper') {
-      applications = await Application.find({ jobkeeper: userId });
+      applications = await Application.find({ jobkeeper: userId }).populate('job');
+      applications = applications.map(app => {
+        if (app.job) {
+          const { totalScore, breakdown } = calculateScore(app, app.job);
+          return { ...app.toObject(), score: totalScore, scoreBreakdown: breakdown };
+        }
+        return { ...app.toObject(), score: 0, scoreBreakdown: {} };
+      });
+      applications.sort((a, b) => b.score - a.score);
     } else if (userRole === 'jobseeker') {
       applications = await Application.find({ user: userId }).populate({
         path: 'job',

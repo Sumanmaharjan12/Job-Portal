@@ -25,7 +25,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let seeker of jobSeekers; let i = index">
+      <tr *ngFor="let seeker of paginatedJobSeekers; let i = index">
          <td>
           <img [src]="'http://localhost:5000/' + seeker.imageUrl" alt="profile" />
         </td>
@@ -55,6 +55,11 @@
       </tr>
     </tbody>
   </table>
+   <div class="pagination" *ngIf="!loading && jobSeekers.length > pageSize">
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+</div>
 
   <!-- No Data -->
   <div *ngIf="!loading && jobSeekers.length === 0" class="no-data">

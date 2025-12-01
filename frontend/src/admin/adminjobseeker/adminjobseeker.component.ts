@@ -8,11 +8,15 @@ import { Component } from '@angular/core';
 })
 export class AdminjobseekerComponent {
 jobSeekers: any[] = [];
+paginatedJobSeekers: any[] = [];
+
   loading = false;
   message = '';
   messageType: 'success' | 'error' | 'warning' = 'success';
 
-  
+   pageSize = 3;   // Show 3 records per page
+  currentPage = 1;
+  totalPages = 1;
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +32,14 @@ jobSeekers: any[] = [];
     this.http.get<any>('/api/admin/jobseekers', { headers }).subscribe({
       next: (res) => {
         this.jobSeekers = res.jobSeekers;
+         // ✅ Calculate total pages
+        this.totalPages = Math.ceil(this.jobSeekers.length / this.pageSize);
+
+        // ✅ Always reset to page 1 on fresh fetch
+        this.currentPage = 1;
+
+        // ✅ Slice data for first page
+        this.updatePaginatedJobSeekers();
         this.loading = false;
       },
       error: () => {
@@ -35,6 +47,25 @@ jobSeekers: any[] = [];
         this.loading = false;
       }
     });
+  }
+   updatePaginatedJobSeekers(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedJobSeekers = this.jobSeekers.slice(startIndex, endIndex);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedJobSeekers();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedJobSeekers();
+    }
   }
 
   deleteJobSeeker(userId: string): void {

@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit {
   // Skills list
   skills: string[] = [];
 
+
   // File names
   cvFileName: string | null = null;
 
@@ -163,12 +164,12 @@ onCvSelected(event: Event) {
         this.cvFileName = file.name;
 
         this.setMessage(
-          `CV accepted ✅ | Confidence: ${res.confidence} | Keywords found: ${keywordsFound.join(', ')}`,
+          `CV accepted | Confidence: ${res.confidence} `,
           'success'
         );
       } else {
         this.setMessage(
-          `CV rejected : ${res.message} | Keywords found: ${keywordsFound.join(', ')}`,
+          `CV rejected : ${res.message} `,
           'error'
         );
         input.value = ''; // reset file input

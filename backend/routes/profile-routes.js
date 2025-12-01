@@ -42,7 +42,14 @@ router.post(
         return res.status(400).json({ message: 'Invalid or missing role' });
       }
 
-      const skillsArr = typeof skills === 'string' ? JSON.parse(skills) : skills;
+       let skillsArr = [];
+      if (skills) {
+        try {
+          skillsArr = JSON.parse(skills);
+        } catch (err) {
+          return res.status(400).json({ message: 'Invalid skills format, must be JSON array' });
+        }
+      }
 
       let profile = await UserProfile.findOne({ userId });
 
